@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld.vue';
 
 <template>
   <div>
+    <Button label="Submit" />
     <a href="https://wxt.dev" target="_blank">
       <img src="/wxt.svg" class="logo" alt="WXT logo" />
     </a>

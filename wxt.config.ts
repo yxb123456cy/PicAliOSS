@@ -1,5 +1,6 @@
 import { defineConfig } from 'wxt';
-
+import Components from 'unplugin-vue-components/vite';
+import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   modules: ['@wxt-dev/module-vue'],
@@ -18,4 +19,12 @@ export default defineConfig({
     // 插件描述
     description: '🚀 轻量级阿里云OSS专用图床浏览器插件 | 专注极简、极速、极稳'
   },
+  // Vite配置;
+  vite: () => ({
+    plugins: [
+      Components({
+        resolvers: [PrimeVueResolver()],
+      }),
+    ],
+  }),
 });
