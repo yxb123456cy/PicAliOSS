@@ -17,7 +17,16 @@ export default defineConfig({
     // 插件版本名称
     version_name: '1.0-beta',
     // 插件描述
-    description: '🚀 轻量级阿里云OSS专用图床浏览器插件 | 专注极简、极速、极稳'
+    description: '🚀 轻量级阿里云OSS专用图床浏览器插件 | 专注极简、极速、极稳',
+    permissions: [
+      'storage',
+      'activeTab',
+      'clipboardRead',
+      'clipboardWrite'
+    ],
+    host_permissions: [
+      '<all_urls>'
+    ]
   },
   // Vite配置;
   vite: () => ({
@@ -26,5 +35,12 @@ export default defineConfig({
         resolvers: [PrimeVueResolver()],
       }),
     ],
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@use "@/assets/styles/variables.scss" as *;\n`
+        }
+      }
+    }
   }),
 });

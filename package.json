@@ -16,16 +16,23 @@
   },
   "dependencies": {
     "@primeuix/themes": "^2.0.3",
+    "@types/crypto-js": "^4.2.2",
     "ali-oss": "^6.23.0",
+    "crypto-js": "^4.2.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
+    "primeicons": "^7.0.0",
     "primevue": "^4.5.5",
     "vue": "^3.5.29",
     "vue-router": "4"
   },
   "devDependencies": {
     "@primevue/auto-import-resolver": "^4.5.5",
+    "@types/ali-oss": "^6.23.3",
+    "@types/chrome": "^0.1.40",
     "@wxt-dev/module-vue": "^1.0.3",
+    "sass": "^1.99.0",
+    "sass-embedded": "^1.99.0",
     "typescript": "^5.9.3",
     "unplugin-vue-components": "^32.0.0",
     "vue-tsc": "^3.2.5",
