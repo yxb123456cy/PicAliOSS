@@ -1,7 +1,172 @@
-# WXT + Vue 3
+# PicAliOSS README.md
 
-This template should help get you started developing with Vue 3 in WXT.
+# PicAliOSS
 
-## Recommended IDE Setup
+🚀 轻量级阿里云OSS专用图床浏览器插件 | 专注极简、极速、极稳
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar).
+基于 WXT + Vue3 + TypeScript + PrimeVue 构建，专为阿里云 OSS 设计的 Chrome 插件，拒绝冗余功能，聚焦图片快速上传与管理，纯前端运行，隐私安全有保障。
+
+## ✨ 特性
+
+- 🌩 **专属阿里云 OSS**：只做最纯粹的阿里云图床，适配OSS全功能，支持防盗链配置
+
+- 🚀**WXT 极速框架**：浏览器插件专用框架，启动快、体积小、性能强，打包后≤5MB
+
+- 🎨 **PrimeVue 优雅 UI**：轻量组件、按需引入，风格简洁专业，完美适配插件小弹窗界面
+
+- 🖼 **多方式上传**：拖拽 / 本地文件选择 / 剪贴板粘贴 / 网页区域截图，覆盖全场景需求
+
+- 🔗 **一键复制链接**：自动生成 URL、Markdown、HTML 三种常用格式，点击即复制
+
+- 📁 **图片管理**：预览、搜索、删除、批量操作，本地缓存加速加载，提升使用体验
+
+- 🔒 **安全存储**：OSS 密钥本地 AES 加密存储，不上传第三方服务器，隐私安全可控
+
+- 🧩 **纯前端运行**：无后台依赖，无需搭建服务器，安装即可使用
+
+- ⚡ **轻量化设计**：占用浏览器内存≤100MB，不影响浏览器运行速度
+
+## 🖥 支持平台
+
+- 主流 Chromium 内核浏览器（优先适配 Chrome ≥ 110.0 版本）
+
+- 兼容 Windows 10+、MacOS 12+、Linux（Ubuntu 20.04+）系统
+
+## 📦 快速安装与开发
+
+### 1. 克隆代码
+
+```bash
+git clone https://github.com/yxb123456cy/PicAliOSS.git
+cd PicAliOSS
+```
+
+### 2. 安装依赖
+
+```bash
+bun install
+```
+
+### 3. 开发模式（热更新）
+
+```bash
+bun run dev
+```
+
+开发模式下，会自动生成临时插件包，可在 Chrome 扩展程序中开启「开发者模式」，加载已解压的扩展程序（选择项目下的 `.wxt/dev` 文件夹）。
+
+### 4. 生产打包
+
+```bash
+bun run build
+```
+
+打包完成后，生成的 `dist` 文件夹即为可直接安装的插件包，压缩后可上传至 Chrome 应用商店。
+
+## 🔧 首次使用配置
+
+1. 打开 Chrome 插件，进入「设置」标签页
+
+2. 填写阿里云 OSS 核心配置信息（需提前在阿里云控制台创建 Bucket）：
+   - AccessKey ID
+
+   - AccessKey Secret
+
+   - Bucket 名称
+
+   - Bucket 所在区域（如：oss-cn-beijing）
+
+   - 自定义域名（可选，无则使用 OSS 默认域名）
+
+3. 点击「测试连接」，验证配置有效性
+
+4. 配置成功后，即可进入「上传」标签页开始使用图床功能
+
+## 🎯 核心功能使用指南
+
+### 1. 图片上传
+
+- 拖拽上传：将本地图片（桌面、文件夹）直接拖拽至插件弹窗的「上传区」，自动触发上传
+
+- 点击上传：点击「上传图片」按钮，选择本地图片（支持多选，单次≤10张）
+
+- 截图上传：点击「截图上传」按钮，框选浏览器页面任意区域，截取后自动上传
+
+- 剪贴板上传：复制本地图片或截图后，插件自动检测，点击提示即可上传
+
+### 2. 图片管理
+
+- 预览：点击图片缩略图，弹出预览弹窗，支持放大、缩小、关闭操作
+
+- 复制链接：点击图片对应的「复制」按钮，可选择 URL、Markdown、HTML 格式，复制后有明确提示
+
+- 下载与删除：点击对应按钮，可将云端图片下载至本地，或删除云端图片及本地缓存
+
+- 批量操作：勾选多个图片，可执行批量删除、批量复制链接操作
+
+- 筛选搜索：通过搜索框模糊搜索文件名，或按上传时间排序，快速找到目标图片
+
+### 3. 高级设置
+
+- 链接格式：在「设置」中设置默认复制链接格式，无需每次上传后手动选择
+
+- 防盗链配置：直接在插件内设置 OSS 防盗链规则，允许指定域名访问，防止图片被盗用
+
+- 快捷键设置：自定义截图上传、打开插件的快捷键，提升操作效率
+
+- 缓存管理：手动清除本地图片缓存，解决图片更新不及时问题
+
+## 🛠 技术栈
+
+- 框架：WXT（Web Extension Framework）
+
+- 前端：Vue 3（Composition API）+ TypeScript
+
+- UI 组件库：PrimeVue（按需引入，轻量无冗余）
+
+- 存储：阿里云 OSS
+
+- 构建工具：Vite
+
+- 加密方式：AES（用于 OSS 密钥本地存储）
+
+## 📁 项目结构
+
+```bash
+PicAliOSS/
+ ├── src/
+ │   ├── assets/        # 静态资源（图标、样式）
+ │   ├── components/    # Vue 组件（基于 PrimeVue 封装）
+ │   ├── pages/         # 插件页面（上传、管理、设置、帮助）
+ │   ├── composables/   # 组合式函数（上传、OSS 对接、缓存）
+ │   ├── utils/         # 工具函数（加密、格式转换、Chrome API 封装）
+ │   ├── types/         # TS 类型定义
+ │   └── main.ts        # 应用入口（PrimeVue 全局配置）
+ ├── .env.example       # 环境变量示例
+ ├── wxt.config.ts      # WXT 框架配置
+ ├── tsconfig.json      # TypeScript 配置
+ ├── package.json
+ └── README.md          # 项目说明文档
+```
+
+## ⚠️ 注意事项
+
+- 确保 Chrome 浏览器版本 ≥ 110.0，低版本可能出现功能异常
+
+- OSS 密钥请妥善保管，插件仅在本地加密存储，不会上传至任何服务器
+
+- 单张图片大小≤50MB，支持格式：JPG、PNG、GIF、WebP、SVG，批量上传≤10张/次
+
+- 开发时需开启 Chrome 扩展程序「开发者模式」，生产打包后可正常安装使用
+
+- PrimeVue 组件采用按需引入，避免冗余代码，确保插件轻量化
+
+## 📝 License
+
+MIT License
+
+## 👨‍💻 开源地址
+
+https://github.com/yxb123456cy/PicAliOSS
+
+欢迎 Star、Fork，提交 Issue 或 PR 优化功能！
