@@ -18,6 +18,14 @@ export default defineConfig({
     version_name: '1.0-beta',
     // 插件描述
     description: '🚀 轻量级阿里云OSS专用图床浏览器插件 | 专注极简、极速、极稳',
+    // 手动指定插件图标
+    icons: {
+      '16': 'icon/icon16.png',
+      '32': 'icon/icon32.png',
+      '48': 'icon/icon48.png',
+      '96': 'icon/icon96.png',
+      '128': 'icon/icon128.png',
+    },
     permissions: [
       'storage',
       'activeTab',

@@ -38,6 +38,11 @@ const onTabChange = (event: any) => {
   <div class="layout-container">
     <div class="header">
       <div class="title-bar">
+        <!-- <Select>
+          <template #dropdownicon>
+            <img alt="dropdown icon" src="@/assets/icon96.png">
+          </template>
+</Select> -->
         <span class="title">PicAliOSS</span>
       </div>
       <TabMenu :model="items" v-model:activeIndex="activeIndex" @tab-change="onTabChange">
