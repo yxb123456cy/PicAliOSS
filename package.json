@@ -17,6 +17,7 @@
   "dependencies": {
     "@primeuix/themes": "^2.0.3",
     "@types/crypto-js": "^4.2.2",
+    "@vueuse/core": "^14.2.1",
     "ali-oss": "^6.23.0",
     "crypto-js": "^4.2.0",
     "pinia": "^3.0.4",
@@ -24,6 +25,7 @@
     "primeicons": "^7.0.0",
     "primevue": "^4.5.5",
     "vue": "^3.5.29",
+    "vue-i18n": "^11.3.2",
     "vue-router": "4"
   },
   "devDependencies": {
@@ -31,10 +33,15 @@
     "@types/ali-oss": "^6.23.3",
     "@types/chrome": "^0.1.40",
     "@wxt-dev/module-vue": "^1.0.3",
+    "cz-git": "^1.12.0",
+    "husky": "^9.1.7",
+    "oxfmt": "^0.44.0",
+    "oxlint": "^1.59.0",
     "sass": "^1.99.0",
     "sass-embedded": "^1.99.0",
     "typescript": "^5.9.3",
     "unplugin-vue-components": "^32.0.0",
+    "vitest": "^4.1.4",
     "vue-tsc": "^3.2.5",
     "wxt": "^0.20.20"
   }
