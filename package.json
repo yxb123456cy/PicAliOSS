@@ -12,7 +12,8 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "vue-tsc --noEmit",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "commit": "git-cz"
   },
   "dependencies": {
     "@primeuix/themes": "^2.0.3",
@@ -44,5 +45,11 @@
     "vitest": "^4.1.4",
     "vue-tsc": "^3.2.5",
     "wxt": "^0.20.20"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git",
+      "useEmoji": true
+    }
   }
 }
