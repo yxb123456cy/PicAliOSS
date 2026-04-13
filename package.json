@@ -16,7 +16,10 @@
     "commit": "git-cz",
     "prepare": "husky",
     "test:unit": "",
-    "test:watch": ""
+    "test:watch": "",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "@primeuix/themes": "^2.0.3",
