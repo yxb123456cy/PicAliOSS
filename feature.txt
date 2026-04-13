@@ -9,7 +9,8 @@
 9. 集成.env环境变量;
 10. 实现gitHubActions自动打包;
 11. 集成Vitest实现相关Utils的测试;
-12. RsPress文档搭建;
+12. VitePress文档搭建;
 13. 单图大文件上传;
 14. 多图上传;
 15. 分片上传;断点续传实现;
+16. fifeFox浏览器发布插件;
