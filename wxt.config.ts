@@ -2,7 +2,6 @@ import { defineConfig } from 'wxt';
 import Components from 'unplugin-vue-components/vite';
 import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 import AutoImport from 'unplugin-auto-import/vite'
-import { ArcoResolver } from 'unplugin-vue-components/resolvers';
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   modules: ['@wxt-dev/module-vue'],
@@ -42,14 +41,10 @@ export default defineConfig({
   vite: () => ({
     plugins: [
       AutoImport({
-        resolvers: [ArcoResolver()],
       }),
       Components({
         resolvers: [
           PrimeVueResolver(),
-          ArcoResolver({
-            sideEffect: true
-          })
         ],
       }),
     ],
