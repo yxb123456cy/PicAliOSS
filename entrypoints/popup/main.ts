@@ -8,6 +8,7 @@ import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import App from './App.vue';
 import pinia from './store';
+import { useSettingsStore } from './store/settings';
 import { router } from './router';
 
 const PicAliOSSPreset = definePreset(Aura, {
@@ -39,5 +40,7 @@ app.use(PrimeVue, {
 // 引入PrimeVue的ToastService插件
 app.use(ToastService);
 app.use(pinia);
+const settingsStore = useSettingsStore(pinia);
+await settingsStore.loadConfig();
 app.use(router);
 app.mount('#app');

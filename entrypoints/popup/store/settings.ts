@@ -27,25 +27,40 @@ export const useSettingsStore = defineStore('settings', () => {
     });
 
     const isConfigured = ref(false);
+    const isLoaded = ref(false);
     // 格式化链接格式;
     const linkFormat = ref('markdown');
+    let loadConfigPromise: Promise<void> | null = null;
 
     // Initialize from chrome storage
     // 从chrome storage中加载阿里云OSS存储配置;
     const loadConfig = async () => {
-        const result = await chrome.storage.local.get('ossConfig');
-        const storedConfigStr = result.ossConfig as string;
-        if (storedConfigStr) {
-            try {
-                const decryptedStr = decrypt(storedConfigStr);
-                if (decryptedStr) {
-                    const parsed = JSON.parse(decryptedStr);
-                    ossConfig.value = parsed;
-                    checkIsConfigured();
+        if (loadConfigPromise) {
+            return loadConfigPromise;
+        }
+
+        loadConfigPromise = (async () => {
+            const result = await chrome.storage.local.get('ossConfig');
+            const storedConfigStr = result.ossConfig as string;
+            if (storedConfigStr) {
+                try {
+                    const decryptedStr = decrypt(storedConfigStr);
+                    if (decryptedStr) {
+                        const parsed = JSON.parse(decryptedStr);
+                        ossConfig.value = parsed;
+                    }
+                } catch (error) {
+                    console.error('Failed to parse OSS config', error);
                 }
-            } catch (error) {
-                console.error('Failed to parse OSS config', error);
             }
+            checkIsConfigured();
+            isLoaded.value = true;
+        })();
+
+        try {
+            await loadConfigPromise;
+        } finally {
+            loadConfigPromise = null;
         }
     };
 
@@ -68,6 +83,7 @@ export const useSettingsStore = defineStore('settings', () => {
     return {
         ossConfig,
         isConfigured,
+        isLoaded,
         linkFormat,
         loadConfig,
         saveConfig
