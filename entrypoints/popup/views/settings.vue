@@ -5,11 +5,11 @@ import { testOssConnection } from '@/utils/oss';
 import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
 import Button from 'primevue/button';
-import Message from 'primevue/message';
-import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import Select from 'primevue/select';
 import Divider from 'primevue/divider';
+import { SDKRespTransform } from '@/utils/resp';
+import { ossChinaRegionsWithName } from '@/utils/region';
 
 const settingsStore = useSettingsStore();
 const toast = useToast();
@@ -29,6 +29,11 @@ const linkFormats = [
   { label: 'HTML', value: 'html' },
   { label: '直链', value: 'url' }
 ];
+
+const regionOptions = ossChinaRegionsWithName.map(region => ({
+  label: `${region.name} (${region.address})`,
+  value: region.address
+}));
 
 const selectedFormat = ref(linkFormats[0]);
 
@@ -55,7 +60,7 @@ const saveConfig = async () => {
       console.log('toast called');
       toast.add({ severity: 'success', summary: '成功', detail: '配置保存成功', life: 3000 });
     } else {
-      toast.add({ severity: 'error', summary: '配置校验失败', detail: res.message, life: 3000 });
+      toast.add({ severity: 'error', summary: '配置校验失败', detail: SDKRespTransform(res.message), life: 3000 });
     }
   } catch (err: any) {
     toast.add({ severity: 'error', summary: '配置保存失败', detail: err.message || '未知错误', life: 3000 });
@@ -86,7 +91,8 @@ const saveConfig = async () => {
       </div>
       <div class="field">
         <label for="region">Bucket 所在区域 (Region)</label>
-        <InputText id="region" v-model="form.region" placeholder="例如：oss-cn-hangzhou" />
+        <Select id="region" v-model="form.region" :options="regionOptions" optionLabel="label" optionValue="value"
+          placeholder="请选择 Bucket 所在区域" filter class="w-full" />
       </div>
       <div class="field">
         <label for="domain">自定义域名 (可选)</label>
@@ -143,7 +149,8 @@ const saveConfig = async () => {
   }
 
   :deep(.p-inputtext),
-  :deep(.p-password-input) {
+  :deep(.p-password-input),
+  :deep(.p-select) {
     width: 100%;
     font-size: 14px;
     padding: 8px 12px;
