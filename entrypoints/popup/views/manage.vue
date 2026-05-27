@@ -8,7 +8,8 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 import Dialog from 'primevue/dialog';
-import Toast from 'primevue/toast';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 
 const imagesStore = useImagesStore();
 const settingsStore = useSettingsStore();
@@ -172,18 +173,18 @@ const nextPage = () => {
 
     <div class="toolbar">
       <div class="search-box">
-        <span class="p-input-icon-left w-full">
-          <i class="pi pi-search" />
-          <InputText v-model="searchQuery" placeholder="搜索文件名" class="w-full p-inputtext-sm" />
-        </span>
+        <IconField>
+          <InputIcon class="pi pi-search" />
+          <InputText v-model="searchQuery" placeholder="搜索文件名" class="w-full search-input" />
+        </IconField>
       </div>
       <div class="actions">
-        <Button icon="pi pi-refresh" severity="secondary" @click="refresh" :loading="imagesStore.isLoading"
-          title="刷新缓存" />
-        <Button icon="pi pi-trash" severity="danger" @click="batchDelete" :disabled="selectedImages.length === 0"
-          title="批量删除" />
-        <Button icon="pi pi-copy" severity="info" @click="batchCopy" :disabled="selectedImages.length === 0"
-          title="批量复制" />
+        <Button icon="pi pi-refresh" severity="secondary" size="small" class="toolbar-icon-btn" @click="refresh"
+          :loading="imagesStore.isLoading" title="刷新缓存" />
+        <Button icon="pi pi-trash" severity="danger" size="small" class="toolbar-icon-btn" @click="batchDelete"
+          :disabled="selectedImages.length === 0" title="批量删除" />
+        <Button icon="pi pi-copy" severity="info" size="small" class="toolbar-icon-btn" @click="batchCopy"
+          :disabled="selectedImages.length === 0" title="批量复制" />
       </div>
     </div>
 
@@ -260,28 +261,35 @@ const nextPage = () => {
 
   .search-box {
     flex: 1;
-    position: relative;
+    min-width: 0;
 
-    :deep(.p-input-icon-left) {
+    :deep(.p-iconfield) {
       width: 100%;
-
-      i {
-        left: 0.75rem;
-      }
     }
 
-    :deep(.p-inputtext) {
+    :deep(.p-inputicon) {
+      color: #94a3b8;
+    }
+
+    :deep(.search-input) {
       width: 100%;
-      padding-left: 2.5rem;
+      height: 34px;
+      padding-left: 2.35rem;
+      border-radius: 10px;
+      background: #fff;
     }
   }
 
   .actions {
     display: flex;
-    gap: 4px;
+    gap: 6px;
+    flex-shrink: 0;
 
-    :deep(.p-button) {
-      padding: 0.5rem;
+    :deep(.toolbar-icon-btn) {
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border-radius: 10px;
     }
   }
 }
