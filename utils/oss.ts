@@ -2,6 +2,12 @@ import OSS from 'ali-oss';
 import { useSettingsStore, type OssConfig } from '@/entrypoints/popup/store/settings';
 
 let ossClient: OSS | null = null;
+const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg', '.avif', '.heic', '.heif']);
+
+const isImageFile = (name: string) => {
+    const normalizedName = name.trim().toLowerCase();
+    return Array.from(IMAGE_EXTENSIONS).some(ext => normalizedName.endsWith(ext));
+};
 
 // 获取阿里云OSS客户端;
 export const getOssClient = (configOverride?: OssConfig) => {
@@ -88,7 +94,7 @@ export const listOssImages = async (maxKeys: number = 50, continuationToken?: st
 
     const result = await client.listV2(options);
 
-    const objects = result.objects || [];
+    const objects = (result.objects || []).filter((obj: any) => isImageFile(obj.name));
     const images = objects.map((obj: any) => {
         let url = obj.url;
         if (!url) {
