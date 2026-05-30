@@ -21,11 +21,10 @@ export default defineConfig({
     description: '🚀 轻量级阿里云OSS专用图床浏览器插件 | 专注极简、极速、极稳',
     // 手动指定插件图标
     icons: {
-      '16': 'icon/icon16.png',
-      '32': 'icon/icon32.png',
-      '48': 'icon/icon48.png',
-      '96': 'icon/icon96.png',
-      '128': 'icon/icon128.png',
+      '16': 'icon/icon-16.png',
+      '32': 'icon/icon-32.png',
+      '48': 'icon/icon-48.png',
+      '128': 'icon/icon-128.png',
     },
     permissions: [
       'storage',
