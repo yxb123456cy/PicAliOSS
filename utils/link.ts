@@ -1,5 +1,10 @@
 import { useSettingsStore } from '@/entrypoints/popup/store/settings';
-// 格式化链接;
+/**
+ * @description 格式化图片链接(三种格式：Markdown、HTML、原始直链);
+ * @param url 图片链接;
+ * @param filename 图片文件名;
+ * @returns 格式化后的链接;
+ */
 export const formatLink = (url: string, filename?: string) => {
     const store = useSettingsStore();
 

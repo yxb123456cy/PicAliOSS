@@ -1,3 +1,8 @@
+/**
+ * @description 转换阿里云 OSS SDK 错误信息为中文;
+ * @param message 原始错误信息;
+ * @returns 优化后的中文错误信息;
+ */
 export function SDKRespTransform(message: string) {
     switch (message) {
         case 'The specified bucket does not exist.':

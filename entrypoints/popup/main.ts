@@ -10,7 +10,7 @@ import App from './App.vue';
 import pinia from './store';
 import { useSettingsStore } from './store/settings';
 import { router } from './router';
-
+// 进行PrimeVue主题自定义
 const PicAliOSSPreset = definePreset(Aura, {
     semantic: {
         primary: {

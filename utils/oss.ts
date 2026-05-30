@@ -2,14 +2,26 @@ import OSS from 'ali-oss';
 import { useSettingsStore, type OssConfig } from '@/entrypoints/popup/store/settings';
 
 let ossClient: OSS | null = null;
+// 定义图片扩展名集合;
 const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg', '.avif', '.heic', '.heif']);
 
+/**
+ * @description 检查文件是否为图片文件;
+ * @param name 文件名;
+ * @returns 是否为图片文件;
+ */
 const isImageFile = (name: string) => {
+    // 去除空格并转换为小写;
     const normalizedName = name.trim().toLowerCase();
+    // 检查文件名是否以图片扩展名结尾;有一个符合就行;
     return Array.from(IMAGE_EXTENSIONS).some(ext => normalizedName.endsWith(ext));
 };
 
-// 获取阿里云OSS客户端;
+/**
+ * @description 获取阿里云OSS客户端实例;
+ * @param configOverride 重配置OSS配置;
+ * @returns OSS客户端实例;
+ */
 export const getOssClient = (configOverride?: OssConfig) => {
     let config = configOverride;
 
@@ -35,7 +47,11 @@ export const getOssClient = (configOverride?: OssConfig) => {
     return ossClient;
 };
 
-// 测试阿里云OSS连接;
+/**
+ * @description 测试阿里云OSS连接是否成功;
+ * @param config OSS配置;
+ * @returns 测试结果;
+ */
 export const testOssConnection = async (config: OssConfig) => {
     try {
         const client = getOssClient(config);
@@ -48,7 +64,12 @@ export const testOssConnection = async (config: OssConfig) => {
     }
 };
 
-// 上传图片到阿里云OSS;
+/**
+ * @description 上传图片到阿里云OSS;
+ * @param file 待上传的图片文件;
+ * @param renamePattern 重命名模式;
+ * @returns 上传结果;
+ */
 export const uploadImageToOss = async (file: File, renamePattern?: string) => {
     const client = getOssClient();
     const settingsStore = useSettingsStore();
@@ -79,7 +100,12 @@ export const uploadImageToOss = async (file: File, renamePattern?: string) => {
     }
 };
 
-// 列出阿里云OSS中的图片;
+/**
+ * @description 列出阿里云OSS中的图片;
+ * @param maxKeys 最大返回数量;
+ * @param continuationToken 继续分页标记;
+ * @returns 图片列表;
+ */
 export const listOssImages = async (maxKeys: number = 50, continuationToken?: string) => {
     const client = getOssClient();
     const settingsStore = useSettingsStore();
@@ -122,7 +148,11 @@ export const listOssImages = async (maxKeys: number = 50, continuationToken?: st
     };
 };
 
-// 删除选中的阿里云OSS中的图片;
+/**
+ * @description 删除选中的阿里云OSS中的图片;
+ * @param name 图片文件名;
+ * @returns 删除结果;
+ */
 export const deleteOssImage = async (name: string) => {
     const client = getOssClient();
     await client.delete(name);
