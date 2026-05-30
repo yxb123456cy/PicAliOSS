@@ -10,9 +10,9 @@ export default defineConfig({
     // 插件名称
     name: 'PicAliOSS',
     // 插件作者email联系方式
-    // author: {
-    //   email: '2186256471@qq.com',
-    // },
+    author: {
+      email: '2186256471@qq.com',
+    },
     // 插件版本号
     version: '1.0',
     // 插件版本名称
@@ -35,9 +35,6 @@ export default defineConfig({
     host_permissions: [
       '<all_urls>'
     ],
-    manifestOverride: {
-
-    },
     browser_specific_settings: {
       "gecko": {
         // 火狐浏览器数据收集权限配置（仅Firefox支持，忽略TypeScript类型检查）
@@ -48,7 +45,6 @@ export default defineConfig({
       }
     }
   },
-
   // Vite配置;
   vite: () => ({
     plugins: [
