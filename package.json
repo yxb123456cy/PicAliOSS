@@ -1,8 +1,8 @@
 {
-  "name": "wxt-vue-starter",
-  "description": "manifest.json description",
+  "name": "PicAliOSS",
+  "description": "Lightweight & High-performance Alibaba Cloud OSS Image Hosting Extension",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1",
   "type": "module",
   "scripts": {
     "dev": "wxt",

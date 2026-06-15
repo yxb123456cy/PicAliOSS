@@ -14,9 +14,9 @@ export default defineConfig({
       email: '2186256471@qq.com',
     },
     // 插件版本号
-    version: '1.0',
+    version: '0.1',
     // 插件版本名称
-    version_name: '1.0-beta',
+    version_name: 'V0.1',
     // 插件描述
     description: '🚀 轻量级阿里云OSS专用图床浏览器插件 | 专注极简、极速、极稳',
     // 手动指定插件图标

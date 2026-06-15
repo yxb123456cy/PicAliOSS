@@ -24,7 +24,7 @@ const env = import.meta.env;
 const pluginInfo = {
   emojiIcon: env.VITE_APP_EMOJI_ICON || '🧡',
   name: env.VITE_APP_NAME || 'PicAliOSS',
-  version: env.VITE_APP_VERSION || 'v1.0-beta',
+  version: env.VITE_APP_VERSION || 'v0.1',
   author: env.VITE_APP_AUTHOR || '程序员轻叶',
   description: env.VITE_APP_DESCRIPTION || '轻量级阿里云 OSS 图床浏览器插件。',
   bio: env.VITE_APP_BIO || '基于 WXT + Vue 3 + TypeScript + PrimeVue 构建，专注图片上传、管理与链接生成。',
