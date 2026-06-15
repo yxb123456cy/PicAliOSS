@@ -139,6 +139,36 @@ Use the "Test Connection" action to verify the configuration before uploading.
 - Preview, copy links, download, and delete images
 - Use batch operations for faster management
 
+## Screenshots
+
+### Extension Installed
+
+![Extension installation view](./screenshots/ext.png)
+
+### OSS Settings
+
+![Alibaba Cloud OSS settings page](./screenshots/settings.png)
+
+### Upload Entry
+
+![Upload page](./screenshots/upload.png)
+
+### Upload Completed
+
+![Upload success message](./screenshots/upload_success.png)
+
+### Image Management
+
+![Image management list](./screenshots/list.png)
+
+### List Refresh
+
+![Image list refreshed successfully](./screenshots/get_success.png)
+
+### Help Page
+
+![Help and FAQ page](./screenshots/help.png)
+
 ## Project Structure
 
 ```text

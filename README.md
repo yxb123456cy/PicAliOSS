@@ -139,6 +139,36 @@ bun run format:check   # 格式检查
 - 预览、复制链接、下载与删除图片
 - 支持批量操作提升管理效率
 
+## 插件截图
+
+### 插件安装
+
+![浏览器扩展安装视图](./screenshots/ext.png)
+
+### OSS 配置
+
+![阿里云 OSS 配置页](./screenshots/settings.png)
+
+### 上传入口
+
+![上传页](./screenshots/upload.png)
+
+### 上传成功
+
+![上传成功提示](./screenshots/upload_success.png)
+
+### 图片管理
+
+![图片管理列表](./screenshots/list.png)
+
+### 列表刷新
+
+![图片列表刷新成功](./screenshots/get_success.png)
+
+### 帮助页面
+
+![帮助与常见问题页面](./screenshots/help.png)
+
 ## 项目结构
 
 ```text
