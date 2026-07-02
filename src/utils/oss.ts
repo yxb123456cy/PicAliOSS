@@ -1,5 +1,5 @@
 import OSS from 'ali-oss';
-import { useSettingsStore, type OssConfig } from '@/entrypoints/popup/store/settings';
+import { useSettingsStore, type OssConfig } from '../entrypoints/popup/store/settings';
 
 let ossClient: OSS | null = null;
 // 定义图片扩展名集合;

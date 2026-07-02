@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { encrypt, decrypt } from '@/utils/crypto';
+import { encrypt, decrypt } from '../../../utils/crypto';
 
 // 阿里云OSS存储配置 TS类型接口;
 export interface OssConfig {

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { testOssConnection, listOssImages, getOssClient } from '@/utils/oss';
-import { useSettingsStore } from '@/entrypoints/popup/store/settings';
+import { testOssConnection, listOssImages, getOssClient } from '../utils/oss';
+import { useSettingsStore } from '../entrypoints/popup/store/settings';
 import { createPinia, setActivePinia } from 'pinia';
 
 // Mock chrome storage
