@@ -1,217 +1,227 @@
-# PicAliOSS
+# ☁️ PicAliOSS
 
-> 轻量级阿里云 OSS 图床浏览器插件，专注图片上传、管理与链接生成。
+> **A professional, lightweight browser extension for Alibaba Cloud OSS image uploading, management, and link generation.**
 
-[English README](./README.en.md) | [项目需求文档](./REQUMENTS.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Vue 3](https://img.shields.io/badge/Vue.js-3.x-green.svg)](https://vuejs.org/)
+[![WXT](https://img.shields.io/badge/WXT-Extension-blue.svg)](https://wxt.dev/)
 
-## 项目简介
+[**English**](./README.md) | [**中文说明**](./README.zh-CN.md)
 
-PicAliOSS 是一个基于 `WXT + Vue 3 + TypeScript + PrimeVue + Pinia` 构建的浏览器插件，面向需要高频上传图片、管理 OSS 资源并快速复制外链的开发者、设计师与内容创作者。
+---
 
-项目坚持纯前端实现，阿里云 OSS 配置保存在本地浏览器侧，并对敏感信息进行本地加密处理；不依赖自建后端服务，开箱即可完成图床上传与基础管理。
+## 🌟 Overview
 
-## 核心能力
+**PicAliOSS** is a powerful browser extension built with modern web technologies: `WXT`, `Vue 3`, `TypeScript`, `PrimeVue`, and `Pinia`. It is tailor-made for developers, designers, and content creators who require a seamless workflow for uploading images to **Alibaba Cloud OSS**, managing cloud assets, and generating shareable links with minimal friction.
 
-- 阿里云 OSS 专用图床：围绕 OSS 上传、管理、链接生成做深度优化
-- 多种上传方式：支持本地文件选择、拖拽上传、截图上传、剪贴板上传
-- 快速链接分发：支持复制 `URL`、`Markdown`、`HTML` 等常见链接格式
-- 图片管理面板：支持列表浏览、关键词搜索、图片预览、删除与批量操作
-- 设置体验优化：支持 OSS 区域下拉选择、连接测试、默认参数集中配置
-- 本地安全存储：敏感配置仅保存在本地，并通过 AES 做基础加密处理
-- 工程化完善：集成 `Vitest`、`Husky`、`VitePress`、类型检查与规范化脚本
+Adopting a **pure frontend architecture**, PicAliOSS stores all OSS credentials securely within your local browser using AES encryption. No intermediate backend services are involved, ensuring maximum privacy and blazing-fast performance.
 
-## 技术栈
+## ✨ Key Features
 
-- Extension Framework: `WXT`
-- Frontend: `Vue 3` + `TypeScript`
-- State Management: `Pinia`
-- UI Library: `PrimeVue` + `PrimeIcons`
-- Cloud Storage: `ali-oss`
-- Build Tooling: `Vite`
-- Testing: `Vitest`
-- Documentation: `VitePress`
-- Code Quality: `Husky` + `oxlint` + `oxfmt`
+- **🎯 OSS-Centric Workflow**: Deeply optimized for Alibaba Cloud OSS image hosting.
+- **🚀 Versatile Upload Methods**: Supports local file selection, drag-and-drop, full-page screenshot capturing, and clipboard image pasting.
+- **🔗 Instant Link Generation**: Quickly copy your images as `URL`, `Markdown`, or `HTML` formats.
+- **🖼️ Comprehensive Asset Management**: Built-in OSS explorer with search, preview, deletion, and batch operations.
+- **⚙️ Intuitive Configuration**: Streamlined settings interface with region selection and real-time connection testing.
+- **🔒 Secure Local Storage**: Sensitive OSS credentials are encrypted locally on the client side.
+- **🛠️ Modern Engineering**: Robust development setup powered by `Vitest`, `Husky`, `VitePress`, with strict type-checking and code formatting.
 
-## 浏览器支持
+## 💻 Tech Stack
 
-- Chrome / Edge 等 Chromium 内核浏览器
-- Firefox 构建链路已接入，开发链路仍建议结合实际环境验证
+- **Extension Framework**: `WXT`
+- **Frontend Core**: `Vue 3` + `TypeScript`
+- **State Management**: `Pinia`
+- **UI Components**: `PrimeVue` + `PrimeIcons`
+- **Cloud Storage SDK**: `ali-oss`
+- **Build Tooling**: `Vite`
+- **Testing**: `Vitest`
+- **Documentation**: `VitePress`
+- **Code Quality**: `Husky` + `oxlint` + `oxfmt`
 
-## 快速开始
+## 🌐 Browser Support
 
-### 1. 克隆项目
+- ✅ **Chrome / Edge** (and other Chromium-based browsers)
+- ⚠️ **Firefox** (Build pipeline included; local verification recommended)
+
+## 🚀 Quick Start
+
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/yxb123456cy/PicAliOSS.git
 cd PicAliOSS
 ```
 
-### 2. 安装依赖
+### 2. Install Dependencies
 
-推荐使用 `bun`：
+We highly recommend using `bun` for optimal performance:
 
 ```bash
 bun install
 ```
 
-### 3. 配置环境变量
+### 3. Environment Configuration
 
-复制 `.env.example` 为 `.env.local`，并填写你的 OSS 配置：
+Duplicate `.env.example` to create your local environment file:
 
 ```bash
 cp .env.example .env.local
 ```
 
+Fill in your OSS details in `.env.local`:
+
 ```env
-VITE_ACCESSKEY_ID=""
-VITE_ACCESSKEY_SECRET=""
-VITE_BUCKET=""
-VITE_REGION=""
+VITE_ACCESSKEY_ID="your_access_key_id"
+VITE_ACCESSKEY_SECRET="your_access_key_secret"
+VITE_BUCKET="your_bucket_name"
+VITE_REGION="your_region"
 VITE_APP_EMOJI_ICON="🧡"
 VITE_APP_NAME="PicAliOSS"
 VITE_APP_VERSION="v0.1"
-VITE_APP_AUTHOR="程序员轻叶"
-VITE_APP_DESCRIPTION="轻量级阿里云 OSS 图床浏览器插件。"
-VITE_APP_BIO="基于 WXT + Vue 3 + TypeScript + PrimeVue 构建，专注图片上传、管理与链接生成。"
+VITE_APP_AUTHOR="Your Name"
+VITE_APP_DESCRIPTION="Lightweight Alibaba Cloud OSS browser extension."
+VITE_APP_BIO="Built with WXT + Vue 3 + TypeScript + PrimeVue for seamless image management."
 VITE_APP_REPOSITORY="https://github.com/yxb123456cy/PicAliOSS"
 ```
 
-### 4. 启动开发
+### 4. Start Development Server
 
 ```bash
 bun run dev
 ```
 
-如果需要 Firefox 开发构建：
+For Firefox development:
 
 ```bash
 bun run dev:firefox
 ```
 
-启动后可在浏览器扩展管理页加载开发产物目录。
+_Note: Once started, load the generated output directory (`.output/`) via your browser's extension management page._
 
-### 5. 构建与打包
+### 5. Build and Package
 
 ```bash
 bun run build
 bun run zip
 ```
 
-## 常用命令
+## 🛠️ Common Commands
 
 ```bash
-bun run dev            # Chrome/Chromium 开发模式
-bun run dev:firefox    # Firefox 开发模式
-bun run build          # Chrome/Chromium 构建
-bun run build:firefox  # Firefox 构建
-bun run zip            # 生成压缩包
-bun run test:unit      # 运行单元测试
-bun run typecheck      # TypeScript 类型检查
-bun run lint           # 代码检查
-bun run format:check   # 格式检查
+bun run dev            # Start Chrome/Chromium dev server
+bun run dev:firefox    # Start Firefox dev server
+bun run build          # Build for Chrome/Chromium
+bun run build:firefox  # Build for Firefox
+bun run zip            # Generate extension ZIP archive
+bun run test:unit      # Execute unit tests
+bun run typecheck      # Run TypeScript type checking
+bun run lint           # Lint source code
+bun run format:check   # Check code formatting
 ```
 
-## 使用流程
+## 📖 Usage Guide
 
-### 1. 配置 OSS
+### 1. Configure OSS
 
-在插件 `设置` 页填写以下信息：
+Navigate to the **Settings** page within the extension and provide:
 
 - `AccessKey ID`
 - `AccessKey Secret`
 - `Bucket`
 - `Region`
-- 自定义域名（可选）
+- Custom Domain (Optional)
 
-点击“测试连接”确认配置生效后，即可开始上传。
+_Tip: Use the "Test Connection" button to verify your credentials before uploading._
 
-### 2. 上传图片
+### 2. Upload Images
 
-- 点击上传：从本地选择一个或多个图片文件
-- 拖拽上传：将图片拖入上传区域
-- 截图上传：截取当前页面后直接上传
-- 剪贴板上传：检测剪贴板中的图片并快速上传
+- **Click**: Select files from your local system.
+- **Drag & Drop**: Drop images directly into the upload zone.
+- **Screenshot**: Capture the current webpage and upload it instantly.
+- **Clipboard**: Paste images directly from your clipboard.
 
-### 3. 管理图片
+### 3. Manage Images
 
-- 搜索 OSS 中已上传图片
-- 仅展示图片类型文件，减少非图片对象干扰
-- 预览、复制链接、下载与删除图片
-- 支持批量操作提升管理效率
+- Search through your uploaded OSS assets.
+- Filter to display only image files, hiding unrelated bucket objects.
+- Preview, copy links, download, or delete images.
+- Utilize batch operations for efficient asset management.
 
-## 插件截图
+## 📸 Screenshots
 
-### 插件安装
+### Extension Installed
 
-![浏览器扩展安装视图](./screenshots/ext.png)
+![Extension installation view](./screenshots/ext.png)
 
-### OSS 配置
+### OSS Settings
 
-![阿里云 OSS 配置页](./screenshots/settings.png)
+![Alibaba Cloud OSS settings page](./screenshots/settings.png)
 
-### 上传入口
+### Upload Entry
 
-![上传页](./screenshots/upload.png)
+![Upload page](./screenshots/upload.png)
 
-### 上传成功
+### Upload Completed
 
-![上传成功提示](./screenshots/upload_success.png)
+![Upload success message](./screenshots/upload_success.png)
 
-### 图片管理
+### Image Management
 
-![图片管理列表](./screenshots/list.png)
+![Image management list](./screenshots/list.png)
 
-### 列表刷新
+### List Refresh
 
-![图片列表刷新成功](./screenshots/get_success.png)
+![Image list refreshed successfully](./screenshots/get_success.png)
 
-### 帮助页面
+### Help Page
 
-![帮助与常见问题页面](./screenshots/help.png)
+![Help and FAQ page](./screenshots/help.png)
 
-## 项目结构
+## 📁 Project Structure
 
 ```text
 PicAliOSS/
-├── entrypoints/          # 插件入口：popup / background / content
-├── entrypoints/popup/    # Popup 页面、路由、状态管理与视图
-├── utils/                # OSS、加密、链接、区域等工具函数
-├── tests/                # Vitest 单元测试
-├── public/               # 图标与静态资源
-├── assets/               # 全局样式与主题变量
-├── docs/                 # VitePress 文档
-├── .husky/               # Git Hooks
-├── .env.example          # 环境变量示例
-├── package.json          # 项目元数据与脚本
-└── wxt.config.ts         # WXT / Manifest 配置
+├── src/                    # 📦 Source code directory
+│   ├── entrypoints/        # Extension entrypoints: popup / background / content
+│   │   └── popup/          # Popup UI: pages, routes, stores, and views
+│   ├── utils/              # Core utilities: OSS, crypto, link formatting
+│   ├── tests/              # Vitest unit tests
+│   └── assets/             # Global styles, variables, and images
+├── public/                 # 🖼️ Static assets and icons
+├── docs/                   # 📚 VitePress documentation
+├── screenshots/            # 📸 Extension screenshots
+├── .husky/                 # 🐶 Git hooks
+├── .env.example            # 🔐 Environment variables template
+├── package.json            # 📦 Project metadata and dependencies
+└── wxt.config.ts           # ⚙️ WXT & Manifest configuration
 ```
 
-## Roadmap
+## 🗺️ Roadmap
 
-- 更多上传能力：大文件、分片上传、断点续传
-- 更丰富的扩展能力：网页图片右键上传、国际化、多主题切换
-- 自动化发布：GitHub Actions 打包与多浏览器发布流程
-- 文档完善：持续补充使用手册与开发文档
+- [ ] Advanced uploads: Large files, multipart uploads, and resumable uploads.
+- [ ] Enhanced capabilities: Context-menu uploads, i18n support, and theme customization.
+- [ ] CI/CD: Automated packaging and multi-browser release flows via GitHub Actions.
+- [ ] Documentation: Comprehensive user guides and developer docs.
 
-## 参与贡献
+## 🤝 Contributing
 
-欢迎通过以下方式参与项目建设：
+We welcome all contributions! Here's how you can help:
 
-- 提交 `Issue` 反馈 Bug 或产品建议
-- 提交 `Pull Request` 改进代码、文档或测试
-- Star 本仓库，帮助项目获得更多反馈
+- Open an **Issue** to report bugs or suggest new features.
+- Submit a **Pull Request** to improve code, documentation, or tests.
+- ⭐️ **Star** the repository to show your support!
 
-如果你准备贡献代码，建议先执行：
+Before submitting code, please ensure all checks pass:
 
 ```bash
 bun run typecheck
 bun run test:unit
 ```
 
-## License
+## 📄 License
 
-本项目基于 [MIT License](./License) 开源。
+This project is licensed under the [MIT License](./License).
 
-## 仓库地址
+## 🏠 Repository
 
-- GitHub: [https://github.com/yxb123456cy/PicAliOSS](https://github.com/yxb123456cy/PicAliOSS)
+- **GitHub**: [https://github.com/yxb123456cy/PicAliOSS](https://github.com/yxb123456cy/PicAliOSS)
