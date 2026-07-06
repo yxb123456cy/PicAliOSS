@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { useImagesStore } from '../store/images';
-import { useSettingsStore } from '../store/settings';
-import { formatLink } from '@/utils/link';
-import { useToast } from 'primevue/usetoast';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Checkbox from 'primevue/checkbox';
-import Dialog from 'primevue/dialog';
-import IconField from 'primevue/iconfield';
-import InputIcon from 'primevue/inputicon';
+import { ref, computed, onMounted } from "vue";
+import { useImagesStore } from "../store/images";
+import { useSettingsStore } from "../store/settings";
+import { formatLink } from "@/utils/link";
+import { useToast } from "primevue/usetoast";
+import InputText from "primevue/inputtext";
+import Button from "primevue/button";
+import Checkbox from "primevue/checkbox";
+import Dialog from "primevue/dialog";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
 
 const imagesStore = useImagesStore();
 const settingsStore = useSettingsStore();
 const toast = useToast();
 
-const searchQuery = ref('');
+const searchQuery = ref("");
 const currentPage = ref(1);
 const pageSize = ref(10);
 const selectedImages = ref<string[]>([]);
-const previewUrl = ref('');
+const previewUrl = ref("");
 const showPreview = ref(false);
 
 onMounted(async () => {
@@ -27,21 +27,21 @@ onMounted(async () => {
     try {
       await imagesStore.fetchImages();
     } catch (e: any) {
-      toast.add({ severity: 'error', summary: '加载失败', detail: e.message, life: 3000 });
+      toast.add({ severity: "error", summary: "加载失败", detail: e.message, life: 3000 });
     }
   }
 });
 
 const refresh = async () => {
   if (!settingsStore.isConfigured) {
-    toast.add({ severity: 'warn', summary: '提示', detail: '请先完成OSS配置', life: 3000 });
+    toast.add({ severity: "warn", summary: "提示", detail: "请先完成OSS配置", life: 3000 });
     return;
   }
   try {
     await imagesStore.fetchImages(true);
-    toast.add({ severity: 'success', summary: '刷新成功', detail: '已更新图片列表', life: 2000 });
+    toast.add({ severity: "success", summary: "刷新成功", detail: "已更新图片列表", life: 2000 });
   } catch (e: any) {
-    toast.add({ severity: 'error', summary: '刷新失败', detail: e.message, life: 3000 });
+    toast.add({ severity: "error", summary: "刷新失败", detail: e.message, life: 3000 });
   }
 };
 
@@ -49,7 +49,7 @@ const filteredImages = computed(() => {
   let list = imagesStore.images;
   if (searchQuery.value) {
     const q = searchQuery.value.toLowerCase();
-    list = list.filter(img => img.name.toLowerCase().includes(q));
+    list = list.filter((img) => img.name.toLowerCase().includes(q));
   }
   return list;
 });
@@ -62,16 +62,16 @@ const paginatedImages = computed(() => {
 });
 
 const formatSize = (bytes: number) => {
-  if (bytes === 0) return '0 B';
+  if (bytes === 0) return "0 B";
   const k = 1024;
-  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const sizes = ["B", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 };
 
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr);
-  return date.toLocaleString('zh-CN', { hour12: false });
+  return date.toLocaleString("zh-CN", { hour12: false });
 };
 
 const openPreview = (url: string) => {
@@ -82,7 +82,12 @@ const openPreview = (url: string) => {
 const copyLink = (url: string, name?: string) => {
   const link = formatLink(url, name);
   navigator.clipboard.writeText(link).then(() => {
-    toast.add({ severity: 'success', summary: '复制成功', detail: '链接已复制到剪贴板', life: 2000 });
+    toast.add({
+      severity: "success",
+      summary: "复制成功",
+      detail: "链接已复制到剪贴板",
+      life: 2000,
+    });
   });
 };
 
@@ -91,17 +96,17 @@ const downloadImage = async (url: string, name: string) => {
     const res = await fetch(url);
     const blob = await res.blob();
     const blobUrl = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.style.display = 'none';
+    const a = document.createElement("a");
+    a.style.display = "none";
     a.href = blobUrl;
     a.download = name;
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(blobUrl);
     document.body.removeChild(a);
-    toast.add({ severity: 'success', summary: '下载成功', detail: '图片已下载', life: 2000 });
+    toast.add({ severity: "success", summary: "下载成功", detail: "图片已下载", life: 2000 });
   } catch (e) {
-    toast.add({ severity: 'error', summary: '下载失败', detail: '无法下载图片', life: 3000 });
+    toast.add({ severity: "error", summary: "下载失败", detail: "无法下载图片", life: 3000 });
   }
 };
 
@@ -109,18 +114,18 @@ const deleteImage = async (name: string) => {
   if (confirm(`确定要删除图片 ${name} 吗？此操作不可恢复。`)) {
     try {
       await imagesStore.removeImage(name);
-      toast.add({ severity: 'success', summary: '删除成功', detail: '图片已删除', life: 2000 });
+      toast.add({ severity: "success", summary: "删除成功", detail: "图片已删除", life: 2000 });
       // remove from selection
-      selectedImages.value = selectedImages.value.filter(sel => sel !== name);
+      selectedImages.value = selectedImages.value.filter((sel) => sel !== name);
     } catch (e: any) {
-      toast.add({ severity: 'error', summary: '删除失败', detail: e.message, life: 3000 });
+      toast.add({ severity: "error", summary: "删除失败", detail: e.message, life: 3000 });
     }
   }
 };
 
 const toggleSelectAll = (checked: boolean) => {
   if (checked) {
-    selectedImages.value = paginatedImages.value.map(img => img.name);
+    selectedImages.value = paginatedImages.value.map((img) => img.name);
   } else {
     selectedImages.value = [];
   }
@@ -128,7 +133,7 @@ const toggleSelectAll = (checked: boolean) => {
 
 const isAllSelected = computed(() => {
   if (paginatedImages.value.length === 0) return false;
-  return paginatedImages.value.every(img => selectedImages.value.includes(img.name));
+  return paginatedImages.value.every((img) => selectedImages.value.includes(img.name));
 });
 
 const batchDelete = async () => {
@@ -138,23 +143,35 @@ const batchDelete = async () => {
       for (const name of selectedImages.value) {
         await imagesStore.removeImage(name);
       }
-      toast.add({ severity: 'success', summary: '删除成功', detail: `已删除 ${selectedImages.value.length} 张图片`, life: 2000 });
+      toast.add({
+        severity: "success",
+        summary: "删除成功",
+        detail: `已删除 ${selectedImages.value.length} 张图片`,
+        life: 2000,
+      });
       selectedImages.value = [];
     } catch (e: any) {
-      toast.add({ severity: 'error', summary: '批量删除失败', detail: e.message, life: 3000 });
+      toast.add({ severity: "error", summary: "批量删除失败", detail: e.message, life: 3000 });
     }
   }
 };
 
 const batchCopy = () => {
   if (selectedImages.value.length === 0) return;
-  const urls = selectedImages.value.map(name => {
-    const img = imagesStore.images.find(i => i.name === name);
-    return img ? formatLink(img.url, img.name) : '';
-  }).filter(Boolean);
+  const urls = selectedImages.value
+    .map((name) => {
+      const img = imagesStore.images.find((i) => i.name === name);
+      return img ? formatLink(img.url, img.name) : "";
+    })
+    .filter(Boolean);
 
-  navigator.clipboard.writeText(urls.join('\n')).then(() => {
-    toast.add({ severity: 'success', summary: '复制成功', detail: `已复制 ${urls.length} 个链接`, life: 2000 });
+  navigator.clipboard.writeText(urls.join("\n")).then(() => {
+    toast.add({
+      severity: "success",
+      summary: "复制成功",
+      detail: `已复制 ${urls.length} 个链接`,
+      life: 2000,
+    });
   });
 };
 
@@ -179,12 +196,33 @@ const nextPage = () => {
         </IconField>
       </div>
       <div class="actions">
-        <Button icon="pi pi-refresh" severity="secondary" size="small" class="toolbar-icon-btn" @click="refresh"
-          :loading="imagesStore.isLoading" title="刷新缓存" />
-        <Button icon="pi pi-trash" severity="danger" size="small" class="toolbar-icon-btn" @click="batchDelete"
-          :disabled="selectedImages.length === 0" title="批量删除" />
-        <Button icon="pi pi-copy" severity="info" size="small" class="toolbar-icon-btn" @click="batchCopy"
-          :disabled="selectedImages.length === 0" title="批量复制" />
+        <Button
+          icon="pi pi-refresh"
+          severity="secondary"
+          size="small"
+          class="toolbar-icon-btn"
+          @click="refresh"
+          :loading="imagesStore.isLoading"
+          title="刷新缓存"
+        />
+        <Button
+          icon="pi pi-trash"
+          severity="danger"
+          size="small"
+          class="toolbar-icon-btn"
+          @click="batchDelete"
+          :disabled="selectedImages.length === 0"
+          title="批量删除"
+        />
+        <Button
+          icon="pi pi-copy"
+          severity="info"
+          size="small"
+          class="toolbar-icon-btn"
+          @click="batchCopy"
+          :disabled="selectedImages.length === 0"
+          title="批量复制"
+        />
       </div>
     </div>
 
@@ -220,21 +258,58 @@ const nextPage = () => {
             </div>
           </div>
           <div class="action-col">
-            <Button icon="pi pi-copy" text size="small" @click="copyLink(img.url, img.name)" title="复制链接" />
-            <Button icon="pi pi-download" text size="small" @click="downloadImage(img.url, img.name)" title="下载" />
-            <Button icon="pi pi-trash" text severity="danger" size="small" @click="deleteImage(img.name)" title="删除" />
+            <Button
+              icon="pi pi-copy"
+              text
+              size="small"
+              @click="copyLink(img.url, img.name)"
+              title="复制链接"
+            />
+            <Button
+              icon="pi pi-download"
+              text
+              size="small"
+              @click="downloadImage(img.url, img.name)"
+              title="下载"
+            />
+            <Button
+              icon="pi pi-trash"
+              text
+              severity="danger"
+              size="small"
+              @click="deleteImage(img.name)"
+              title="删除"
+            />
           </div>
         </div>
       </template>
     </div>
 
     <div class="pagination" v-if="totalPages > 1">
-      <Button icon="pi pi-angle-left" text size="small" @click="prevPage" :disabled="currentPage === 1" />
+      <Button
+        icon="pi pi-angle-left"
+        text
+        size="small"
+        @click="prevPage"
+        :disabled="currentPage === 1"
+      />
       <span>{{ currentPage }} / {{ totalPages }}</span>
-      <Button icon="pi pi-angle-right" text size="small" @click="nextPage" :disabled="currentPage === totalPages" />
+      <Button
+        icon="pi pi-angle-right"
+        text
+        size="small"
+        @click="nextPage"
+        :disabled="currentPage === totalPages"
+      />
     </div>
 
-    <Dialog v-model:visible="showPreview" modal header="图片预览" :style="{ width: '90vw' }" :dismissableMask="true">
+    <Dialog
+      v-model:visible="showPreview"
+      modal
+      header="图片预览"
+      :style="{ width: '90vw' }"
+      :dismissableMask="true"
+    >
       <div class="preview-container">
         <img :src="previewUrl" alt="preview" />
       </div>

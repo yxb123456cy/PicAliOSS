@@ -6,8 +6,8 @@
 // 3.不能直接访问扩展的 chrome.api 全部方法（仅能访问 chrome.runtime、chrome.storage 等少数 API）；
 // 4.可通过 chrome.runtime.sendMessage 与扩展的后台脚本通信。
 export default defineContentScript({
-  matches: ['*://*.google.com/*'],
+  matches: ["*://*.google.com/*"],
   main() {
-    console.log('Hello content.');
+    console.log("Hello content.");
   },
 });

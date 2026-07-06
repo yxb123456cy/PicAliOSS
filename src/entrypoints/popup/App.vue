@@ -1,10 +1,9 @@
-<script lang="ts" setup>
-</script>
+<script lang="ts" setup></script>
 
 <template>
   <RouterView />
 </template>
 
 <style>
-@import '@/assets/styles/global.scss';
+@import "@/assets/styles/global.scss";
 </style>

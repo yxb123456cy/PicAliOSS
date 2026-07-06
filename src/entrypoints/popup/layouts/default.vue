@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import TabMenu from 'primevue/tabmenu';
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import TabMenu from "primevue/tabmenu";
 
 const route = useRoute();
 const router = useRouter();
 
 const items = ref([
-  { label: '上传', icon: 'pi pi-cloud-upload', route: '/' },
-  { label: '管理', icon: 'pi pi-images', route: '/manage' },
-  { label: '设置', icon: 'pi pi-cog', route: '/settings' },
-  { label: '帮助', icon: 'pi pi-question-circle', route: '/help' }
+  { label: "上传", icon: "pi pi-cloud-upload", route: "/" },
+  { label: "管理", icon: "pi pi-images", route: "/manage" },
+  { label: "设置", icon: "pi pi-cog", route: "/settings" },
+  { label: "帮助", icon: "pi pi-question-circle", route: "/help" },
 ]);
 
 const activeIndex = ref(0);
@@ -23,7 +23,7 @@ watch(
       activeIndex.value = index;
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const onTabChange = (event: any) => {

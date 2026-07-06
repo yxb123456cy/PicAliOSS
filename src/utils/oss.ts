@@ -1,9 +1,20 @@
-import OSS from 'ali-oss';
-import { useSettingsStore, type OssConfig } from '../entrypoints/popup/store/settings';
+import OSS from "ali-oss";
+import { useSettingsStore, type OssConfig } from "../entrypoints/popup/store/settings";
 
 let ossClient: OSS | null = null;
 // 定义图片扩展名集合;
-const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg', '.avif', '.heic', '.heif']);
+const IMAGE_EXTENSIONS = new Set([
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".gif",
+  ".webp",
+  ".bmp",
+  ".svg",
+  ".avif",
+  ".heic",
+  ".heif",
+]);
 
 /**
  * @description 检查文件是否为图片文件;
@@ -11,10 +22,10 @@ const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bm
  * @returns 是否为图片文件;
  */
 const isImageFile = (name: string) => {
-    // 去除空格并转换为小写;
-    const normalizedName = name.trim().toLowerCase();
-    // 检查文件名是否以图片扩展名结尾;有一个符合就行;
-    return Array.from(IMAGE_EXTENSIONS).some(ext => normalizedName.endsWith(ext));
+  // 去除空格并转换为小写;
+  const normalizedName = name.trim().toLowerCase();
+  // 检查文件名是否以图片扩展名结尾;有一个符合就行;
+  return Array.from(IMAGE_EXTENSIONS).some((ext) => normalizedName.endsWith(ext));
 };
 
 /**
@@ -23,28 +34,34 @@ const isImageFile = (name: string) => {
  * @returns OSS客户端实例;
  */
 export const getOssClient = (configOverride?: OssConfig) => {
-    let config = configOverride;
+  let config = configOverride;
 
-    if (!config) {
-        const settingsStore = useSettingsStore();
-        config = settingsStore.ossConfig;
-    }
+  if (!config) {
+    const settingsStore = useSettingsStore();
+    config = settingsStore.ossConfig;
+  }
 
-    if (!config || !config.accessKeyId || !config.accessKeySecret || !config.bucket || !config.region) {
-        throw new Error('OSS Config is missing required fields');
-    }
+  if (
+    !config ||
+    !config.accessKeyId ||
+    !config.accessKeySecret ||
+    !config.bucket ||
+    !config.region
+  ) {
+    throw new Error("OSS Config is missing required fields");
+  }
 
-    if (!ossClient || configOverride) {
-        ossClient = new OSS({
-            region: config.region,
-            accessKeyId: config.accessKeyId,
-            accessKeySecret: config.accessKeySecret,
-            bucket: config.bucket,
-            secure: true,
-        });
-    }
+  if (!ossClient || configOverride) {
+    ossClient = new OSS({
+      region: config.region,
+      accessKeyId: config.accessKeyId,
+      accessKeySecret: config.accessKeySecret,
+      bucket: config.bucket,
+      secure: true,
+    });
+  }
 
-    return ossClient;
+  return ossClient;
 };
 
 /**
@@ -53,15 +70,15 @@ export const getOssClient = (configOverride?: OssConfig) => {
  * @returns 测试结果;
  */
 export const testOssConnection = async (config: OssConfig) => {
-    try {
-        const client = getOssClient(config);
-        // list buckets or just put an empty file to test
-        // actually `listBuckets` requires full permission, `list` is safer if the key only has bucket permissions
-        await client.listV2({ "max-keys": 1 });
-        return { success: true, message: '配置成功' };
-    } catch (error: any) {
-        return { success: false, message: error.message || '连接失败' };
-    }
+  try {
+    const client = getOssClient(config);
+    // list buckets or just put an empty file to test
+    // actually `listBuckets` requires full permission, `list` is safer if the key only has bucket permissions
+    await client.listV2({ "max-keys": 1 });
+    return { success: true, message: "配置成功" };
+  } catch (error: any) {
+    return { success: false, message: error.message || "连接失败" };
+  }
 };
 
 /**
@@ -70,34 +87,35 @@ export const testOssConnection = async (config: OssConfig) => {
  * @param renamePattern 重命名模式;
  * @returns 上传结果;
  */
-export const uploadImageToOss = async (file: File, renamePattern?: string) => {
-    const client = getOssClient();
-    const settingsStore = useSettingsStore();
-    const config = settingsStore.ossConfig;
+export const uploadImageToOss = async (file: File, _renamePattern?: string) => {
+  const client = getOssClient();
+  const settingsStore = useSettingsStore();
+  const config = settingsStore.ossConfig;
 
-    // Create unique filename
-    const ext = file.name.split('.').pop() || '';
-    const timestamp = Date.now();
-    let filename = `${timestamp}_${file.name}`; // Default format
+  // Create unique filename
+  const ext = file.name.split(".").pop() || "";
+  console.log("文件扩展名为:", ext);
+  const timestamp = Date.now();
+  let filename = `${timestamp}_${file.name}`; // Default format
 
-    try {
-        const result = await client.put(filename, file);
+  try {
+    const result = await client.put(filename, file);
 
-        let url = result.url;
-        // Apply custom domain if configured
-        if (config.customDomain) {
-            let cleanDomain = config.customDomain.replace(/\/$/, '');
-            if (!cleanDomain.startsWith('http')) {
-                cleanDomain = `https://${cleanDomain}`;
-            }
-            url = `${cleanDomain}/${result.name}`;
-        }
-
-        return { success: true, url, name: result.name };
-    } catch (error: any) {
-        console.error('OSS Upload Error', error);
-        throw new Error(error.message || '上传失败');
+    let url = result.url;
+    // Apply custom domain if configured
+    if (config.customDomain) {
+      let cleanDomain = config.customDomain.replace(/\/$/, "");
+      if (!cleanDomain.startsWith("http")) {
+        cleanDomain = `https://${cleanDomain}`;
+      }
+      url = `${cleanDomain}/${result.name}`;
     }
+
+    return { success: true, url, name: result.name };
+  } catch (error: any) {
+    console.error("OSS Upload Error", error);
+    throw new Error(error.message || "上传失败");
+  }
 };
 
 /**
@@ -107,45 +125,45 @@ export const uploadImageToOss = async (file: File, renamePattern?: string) => {
  * @returns 图片列表;
  */
 export const listOssImages = async (maxKeys: number = 50, continuationToken?: string) => {
-    const client = getOssClient();
-    const settingsStore = useSettingsStore();
-    const config = settingsStore.ossConfig;
+  const client = getOssClient();
+  const settingsStore = useSettingsStore();
+  const config = settingsStore.ossConfig;
 
-    const options: any = {
-        'max-keys': maxKeys
-    };
-    if (continuationToken) {
-        options['continuation-token'] = continuationToken;
+  const options: any = {
+    "max-keys": maxKeys,
+  };
+  if (continuationToken) {
+    options["continuation-token"] = continuationToken;
+  }
+
+  const result = await client.listV2(options);
+
+  const objects = (result.objects || []).filter((obj: any) => isImageFile(obj.name));
+  const images = objects.map((obj: any) => {
+    let url = obj.url;
+    if (!url) {
+      url = client.generateObjectUrl(obj.name);
     }
-
-    const result = await client.listV2(options);
-
-    const objects = (result.objects || []).filter((obj: any) => isImageFile(obj.name));
-    const images = objects.map((obj: any) => {
-        let url = obj.url;
-        if (!url) {
-            url = client.generateObjectUrl(obj.name);
-        }
-        if (config.customDomain) {
-            let cleanDomain = config.customDomain.replace(/\/$/, '');
-            if (!cleanDomain.startsWith('http')) {
-                cleanDomain = `https://${cleanDomain}`;
-            }
-            url = `${cleanDomain}/${obj.name}`;
-        }
-        return {
-            name: obj.name,
-            url: url,
-            lastModified: obj.lastModified,
-            size: obj.size
-        };
-    });
-
+    if (config.customDomain) {
+      let cleanDomain = config.customDomain.replace(/\/$/, "");
+      if (!cleanDomain.startsWith("http")) {
+        cleanDomain = `https://${cleanDomain}`;
+      }
+      url = `${cleanDomain}/${obj.name}`;
+    }
     return {
-        images,
-        nextContinuationToken: result.nextContinuationToken,
-        isTruncated: result.isTruncated
+      name: obj.name,
+      url: url,
+      lastModified: obj.lastModified,
+      size: obj.size,
     };
+  });
+
+  return {
+    images,
+    nextContinuationToken: result.nextContinuationToken,
+    isTruncated: result.isTruncated,
+  };
 };
 
 /**
@@ -154,6 +172,6 @@ export const listOssImages = async (maxKeys: number = 50, continuationToken?: st
  * @returns 删除结果;
  */
 export const deleteOssImage = async (name: string) => {
-    const client = getOssClient();
-    await client.delete(name);
+  const client = getOssClient();
+  await client.delete(name);
 };

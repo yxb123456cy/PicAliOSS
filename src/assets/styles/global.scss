@@ -1,5 +1,5 @@
 // assets/styles/global.scss
-@use './variables.scss' as *;
+@use "./variables.scss" as *;
 
 html,
 body {
@@ -8,7 +8,7 @@ body {
   width: 600px;
   height: 600px;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: $cus-text-color;
   background-color: $cus-bg-color;
 }

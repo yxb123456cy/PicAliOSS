@@ -2,5 +2,5 @@
 // 它没有 DOM 访问权限（不能用 document / window），也不能操作页面元素；
 // 它是事件驱动的：只有触发特定事件（如扩展安装、消息接收、定时器）时才会激活，闲置一段时间（约 30 秒）后会自动休眠，事件触发时又会唤醒；
 export default defineBackground(() => {
-  console.log('Hello background!', { id: browser.runtime.id });
+  console.log("Hello background!", { id: browser.runtime.id });
 });
