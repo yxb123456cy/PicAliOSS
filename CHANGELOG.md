@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2](https://github.com/yxb123456cy/PicAliOSS/compare/v0.0.1...v0.0.2) (2026-07-06)
+
+
+### Code Refactoring
+
+* :recycle: No longer use the "src" directory as the business directory. Follow the WXT standard. ([85ad021](https://github.com/yxb123456cy/PicAliOSS/commit/85ad0217889722adf0d06d67d8fd3f5286280f37))
+* :recycle: Package the unified singleton Pinia instance and the createExtensionApp method ([584f5dd](https://github.com/yxb123456cy/PicAliOSS/commit/584f5dd6c82829a0159b514badcef94fd79309d7))
+
 ### 0.0.1 (2026-07-06)
 
 ### Features
