@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { listOssImages, deleteOssImage } from "@/utils/oss";
+import { listOssImages, deleteOssImage } from "@@/utils/oss";
 
 export interface OssImage {
   name: string;

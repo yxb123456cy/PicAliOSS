@@ -4,7 +4,6 @@ import { PrimeVueResolver } from "@primevue/auto-import-resolver";
 import AutoImport from "unplugin-auto-import/vite";
 // See https://wxt.dev/api/config.html
 export default defineConfig({
-  srcDir: "src",
   modules: ["@wxt-dev/module-vue"],
   // 插件manifestV3配置
   manifest: {

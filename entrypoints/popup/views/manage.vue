@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useImagesStore } from "../store/images";
 import { useSettingsStore } from "../store/settings";
-import { formatLink } from "@/utils/link";
+import { formatLink } from "@@/utils/link";
 import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
@@ -196,33 +196,12 @@ const nextPage = () => {
         </IconField>
       </div>
       <div class="actions">
-        <Button
-          icon="pi pi-refresh"
-          severity="secondary"
-          size="small"
-          class="toolbar-icon-btn"
-          @click="refresh"
-          :loading="imagesStore.isLoading"
-          title="刷新缓存"
-        />
-        <Button
-          icon="pi pi-trash"
-          severity="danger"
-          size="small"
-          class="toolbar-icon-btn"
-          @click="batchDelete"
-          :disabled="selectedImages.length === 0"
-          title="批量删除"
-        />
-        <Button
-          icon="pi pi-copy"
-          severity="info"
-          size="small"
-          class="toolbar-icon-btn"
-          @click="batchCopy"
-          :disabled="selectedImages.length === 0"
-          title="批量复制"
-        />
+        <Button icon="pi pi-refresh" severity="secondary" size="small" class="toolbar-icon-btn" @click="refresh"
+          :loading="imagesStore.isLoading" title="刷新缓存" />
+        <Button icon="pi pi-trash" severity="danger" size="small" class="toolbar-icon-btn" @click="batchDelete"
+          :disabled="selectedImages.length === 0" title="批量删除" />
+        <Button icon="pi pi-copy" severity="info" size="small" class="toolbar-icon-btn" @click="batchCopy"
+          :disabled="selectedImages.length === 0" title="批量复制" />
       </div>
     </div>
 
@@ -258,58 +237,21 @@ const nextPage = () => {
             </div>
           </div>
           <div class="action-col">
-            <Button
-              icon="pi pi-copy"
-              text
-              size="small"
-              @click="copyLink(img.url, img.name)"
-              title="复制链接"
-            />
-            <Button
-              icon="pi pi-download"
-              text
-              size="small"
-              @click="downloadImage(img.url, img.name)"
-              title="下载"
-            />
-            <Button
-              icon="pi pi-trash"
-              text
-              severity="danger"
-              size="small"
-              @click="deleteImage(img.name)"
-              title="删除"
-            />
+            <Button icon="pi pi-copy" text size="small" @click="copyLink(img.url, img.name)" title="复制链接" />
+            <Button icon="pi pi-download" text size="small" @click="downloadImage(img.url, img.name)" title="下载" />
+            <Button icon="pi pi-trash" text severity="danger" size="small" @click="deleteImage(img.name)" title="删除" />
           </div>
         </div>
       </template>
     </div>
 
     <div class="pagination" v-if="totalPages > 1">
-      <Button
-        icon="pi pi-angle-left"
-        text
-        size="small"
-        @click="prevPage"
-        :disabled="currentPage === 1"
-      />
+      <Button icon="pi pi-angle-left" text size="small" @click="prevPage" :disabled="currentPage === 1" />
       <span>{{ currentPage }} / {{ totalPages }}</span>
-      <Button
-        icon="pi pi-angle-right"
-        text
-        size="small"
-        @click="nextPage"
-        :disabled="currentPage === totalPages"
-      />
+      <Button icon="pi pi-angle-right" text size="small" @click="nextPage" :disabled="currentPage === totalPages" />
     </div>
 
-    <Dialog
-      v-model:visible="showPreview"
-      modal
-      header="图片预览"
-      :style="{ width: '90vw' }"
-      :dismissableMask="true"
-    >
+    <Dialog v-model:visible="showPreview" modal header="图片预览" :style="{ width: '90vw' }" :dismissableMask="true">
       <div class="preview-container">
         <img :src="previewUrl" alt="preview" />
       </div>

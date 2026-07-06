@@ -1,4 +1,4 @@
-import { useSettingsStore } from "@/entrypoints/popup/store/settings";
+import { useSettingsStore } from "@@/entrypoints/popup/store/settings";
 /**
  * @description 格式化图片链接(三种格式：Markdown、HTML、原始直链);
  * @param url 图片链接;
