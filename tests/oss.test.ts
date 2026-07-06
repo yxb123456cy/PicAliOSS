@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { testOssConnection, listOssImages } from "../utils/oss";
-import { useSettingsStore } from "../entrypoints/popup/store/settings";
 import { createPinia, setActivePinia } from "pinia";
 
 // Mock chrome storage
@@ -53,7 +52,6 @@ describe("OSS Utils", () => {
   );
 
   it("should list images using mocked store config", async () => {
-    const store = useSettingsStore();
     const config = getEnvConfig();
 
     // 如果没有配置环境变量，跳过这个测试的真实请求部分
@@ -62,10 +60,8 @@ describe("OSS Utils", () => {
       return;
     }
 
-    store.ossConfig = config;
-
     try {
-      const result = await listOssImages(5);
+      const result = await listOssImages(config, 5);
       expect(result).toHaveProperty("images");
       expect(Array.isArray(result.images)).toBe(true);
       if (result.images.length > 0) {

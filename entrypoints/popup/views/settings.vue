@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
-import { useSettingsStore, type OssConfig } from "../store/settings";
-import { testOssConnection } from "@@/utils/oss";
+import { useSettingsStore } from "@/stores/settings";
+import { testOssConnection } from "@/utils/oss";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import Button from "primevue/button";
 import { useToast } from "primevue/usetoast";
 import Select from "primevue/select";
 import Divider from "primevue/divider";
-import { SDKRespTransform } from "@@/utils/resp";
-import { ossChinaRegionsWithName } from "@@/utils/region";
+import { SDKRespTransform } from "@/utils/resp";
+import { ossChinaRegionsWithName } from "@/utils/region";
+import { LinkFormat, OssConfig } from "@/typings";
 
 const settingsStore = useSettingsStore();
 const toast = useToast();
@@ -48,7 +49,7 @@ onMounted(async () => {
 });
 
 watch(selectedFormat, (newVal) => {
-  settingsStore.linkFormat = newVal.value;
+  settingsStore.linkFormat = newVal.value as LinkFormat;
 });
 
 const saveConfig = async () => {
@@ -91,8 +92,13 @@ const saveConfig = async () => {
       </div>
       <div class="field">
         <label for="sk">AccessKey Secret</label>
-        <Password id="sk" v-model="form.accessKeySecret" placeholder="输入AccessKey Secret" toggleMask
-          :feedback="false" />
+        <Password
+          id="sk"
+          v-model="form.accessKeySecret"
+          placeholder="输入AccessKey Secret"
+          toggleMask
+          :feedback="false"
+        />
       </div>
       <div class="field">
         <label for="bucket">Bucket 名称</label>
@@ -100,15 +106,32 @@ const saveConfig = async () => {
       </div>
       <div class="field">
         <label for="region">Bucket 所在区域 (Region)</label>
-        <Select id="region" v-model="form.region" :options="regionOptions" optionLabel="label" optionValue="value"
-          placeholder="请选择 Bucket 所在区域" filter class="w-full" />
+        <Select
+          id="region"
+          v-model="form.region"
+          :options="regionOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="请选择 Bucket 所在区域"
+          filter
+          class="w-full"
+        />
       </div>
       <div class="field">
         <label for="domain">自定义域名 (可选)</label>
-        <InputText id="domain" v-model="form.customDomain" placeholder="例如：https://img.example.com" />
+        <InputText
+          id="domain"
+          v-model="form.customDomain"
+          placeholder="例如：https://img.example.com"
+        />
       </div>
 
-      <Button label="保存配置并测试连接" @click="saveConfig" :loading="isTesting" class="w-full mt-2" />
+      <Button
+        label="保存配置并测试连接"
+        @click="saveConfig"
+        :loading="isTesting"
+        class="w-full mt-2"
+      />
     </div>
 
     <Divider />
@@ -117,8 +140,13 @@ const saveConfig = async () => {
       <h3 class="section-title">其他设置</h3>
       <div class="field">
         <label>默认链接格式</label>
-        <Select v-model="selectedFormat" :options="linkFormats" optionLabel="label" placeholder="选择链接格式"
-          class="w-full" />
+        <Select
+          v-model="selectedFormat"
+          :options="linkFormats"
+          optionLabel="label"
+          placeholder="选择链接格式"
+          class="w-full"
+        />
       </div>
     </div>
   </div>

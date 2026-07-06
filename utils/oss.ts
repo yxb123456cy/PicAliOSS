@@ -1,7 +1,8 @@
+import { OssConfig } from "@/typings";
 import OSS from "ali-oss";
-import { useSettingsStore, type OssConfig } from "../entrypoints/popup/store/settings";
 
 let ossClient: OSS | null = null;
+let currentClientKey = "";
 // 定义图片扩展名集合;
 const IMAGE_EXTENSIONS = new Set([
   ".jpg",
@@ -30,17 +31,10 @@ const isImageFile = (name: string) => {
 
 /**
  * @description 获取阿里云OSS客户端实例;
- * @param configOverride 重配置OSS配置;
+ * @param config OSS配置;
  * @returns OSS客户端实例;
  */
-export const getOssClient = (configOverride?: OssConfig) => {
-  let config = configOverride;
-
-  if (!config) {
-    const settingsStore = useSettingsStore();
-    config = settingsStore.ossConfig;
-  }
-
+export const getOssClient = (config: OssConfig) => {
   if (
     !config ||
     !config.accessKeyId ||
@@ -51,7 +45,14 @@ export const getOssClient = (configOverride?: OssConfig) => {
     throw new Error("OSS Config is missing required fields");
   }
 
-  if (!ossClient || configOverride) {
+  const nextClientKey = JSON.stringify({
+    accessKeyId: config.accessKeyId,
+    accessKeySecret: config.accessKeySecret,
+    bucket: config.bucket,
+    region: config.region,
+  });
+
+  if (!ossClient || currentClientKey !== nextClientKey) {
     ossClient = new OSS({
       region: config.region,
       accessKeyId: config.accessKeyId,
@@ -59,6 +60,7 @@ export const getOssClient = (configOverride?: OssConfig) => {
       bucket: config.bucket,
       secure: true,
     });
+    currentClientKey = nextClientKey;
   }
 
   return ossClient;
@@ -83,20 +85,15 @@ export const testOssConnection = async (config: OssConfig) => {
 
 /**
  * @description 上传图片到阿里云OSS;
+ * @param config OSS配置;
  * @param file 待上传的图片文件;
  * @param renamePattern 重命名模式;
  * @returns 上传结果;
  */
-export const uploadImageToOss = async (file: File, _renamePattern?: string) => {
-  const client = getOssClient();
-  const settingsStore = useSettingsStore();
-  const config = settingsStore.ossConfig;
-
-  // Create unique filename
-  const ext = file.name.split(".").pop() || "";
-  console.log("文件扩展名为:", ext);
+export const uploadImageToOss = async (config: OssConfig, file: File, _renamePattern?: string) => {
+  const client = getOssClient(config);
   const timestamp = Date.now();
-  let filename = `${timestamp}_${file.name}`; // Default format
+  const filename = `${timestamp}_${file.name}`;
 
   try {
     const result = await client.put(filename, file);
@@ -120,15 +117,17 @@ export const uploadImageToOss = async (file: File, _renamePattern?: string) => {
 
 /**
  * @description 列出阿里云OSS中的图片;
+ * @param config OSS配置;
  * @param maxKeys 最大返回数量;
  * @param continuationToken 继续分页标记;
  * @returns 图片列表;
  */
-export const listOssImages = async (maxKeys: number = 50, continuationToken?: string) => {
-  const client = getOssClient();
-  const settingsStore = useSettingsStore();
-  const config = settingsStore.ossConfig;
-
+export const listOssImages = async (
+  config: OssConfig,
+  maxKeys: number = 50,
+  continuationToken?: string,
+) => {
+  const client = getOssClient(config);
   const options: any = {
     "max-keys": maxKeys,
   };
@@ -168,10 +167,11 @@ export const listOssImages = async (maxKeys: number = 50, continuationToken?: st
 
 /**
  * @description 删除选中的阿里云OSS中的图片;
+ * @param config OSS配置;
  * @param name 图片文件名;
  * @returns 删除结果;
  */
-export const deleteOssImage = async (name: string) => {
-  const client = getOssClient();
+export const deleteOssImage = async (config: OssConfig, name: string) => {
+  const client = getOssClient(config);
   await client.delete(name);
 };
