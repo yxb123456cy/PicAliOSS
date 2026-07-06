@@ -53,10 +53,7 @@
     "commit": "git-cz",
     "prepare": "husky",
     "test:unit": "vitest run",
-    "test:watch": "vitest",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@primeuix/themes": "^2.0.3",
@@ -87,7 +84,6 @@
     "typescript": "^5.9.3",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-vue-components": "^32.0.0",
-    "vitepress": "^2.0.0-alpha.17",
     "vitest": "^4.1.4",
     "vue-tsc": "^3.2.5",
     "wxt": "^0.20.20"
