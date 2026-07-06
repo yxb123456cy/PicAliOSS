@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/yxb123456cy/PicAliOSS/compare/v0.0.2...v0.0.3) (2026-07-06)
+
+
+### Features
+
+* **ui:** :sparkles: Added the sidepanel UI section for the sidebar. ([c864e10](https://github.com/yxb123456cy/PicAliOSS/commit/c864e10b62864024c299d94110933b6330f48117))
+
 ### [0.0.2](https://github.com/yxb123456cy/PicAliOSS/compare/v0.0.1...v0.0.2) (2026-07-06)
 
 ### Code Refactoring
