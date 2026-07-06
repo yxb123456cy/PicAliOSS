@@ -1,2 +1,4 @@
 bun run compile
+bun run format
+bun run lint
 bun run test:unit
