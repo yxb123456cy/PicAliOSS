@@ -30,3 +30,5 @@ web-ext.config.ts
 # docs
 feature.txt
 REQUMENTS.md
+auto-imports.d.ts
+components.d.ts
