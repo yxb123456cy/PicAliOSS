@@ -27,7 +27,7 @@ export default defineConfig({
       "48": "icon/icon-48.png",
       "128": "icon/icon-128.png",
     },
-    permissions: ["storage", "activeTab", "clipboardRead", "clipboardWrite", "sidePanel"],
+    permissions: ["storage", "activeTab", "clipboardRead", "clipboardWrite", "sidePanel", "contextMenus", "notifications"],
     host_permissions: ["<all_urls>"],
     browser_specific_settings: {
       gecko: {

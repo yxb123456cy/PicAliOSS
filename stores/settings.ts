@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { decrypt, encrypt } from "@/utils/crypto";
 import { LinkFormat, OssConfig } from "@/typings";
 
@@ -74,7 +74,14 @@ export const useSettingsStore = defineStore(
       ossConfig.value = nextConfig;
       checkIsConfigured();
     };
-
+    watch([enableCompression, linkFormat], () => {
+      chrome.storage.local.set({
+        appSettings: {
+          enableCompression: enableCompression.value,
+          linkFormat: linkFormat.value,
+        },
+      });
+    }, { immediate: true }); // immediate: true 确保初始化时写入
     return {
       ossConfig,
       isConfigured,

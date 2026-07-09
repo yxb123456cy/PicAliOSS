@@ -1,6 +1,6 @@
 import { OssConfig } from "@/typings";
 import OSS from "ali-oss";
-import imageCompression, { Options as CompressionOptions } from "browser-image-compression";
+// import imageCompression, { Options as CompressionOptions } from "browser-image-compression";
 
 let ossClient: OSS | null = null;
 let currentClientKey = "";
@@ -60,6 +60,9 @@ export const getOssClient = (config: OssConfig) => {
       accessKeySecret: config.accessKeySecret,
       bucket: config.bucket,
       secure: true,
+      // 使用 fetch API，兼容 Service Worker 环境
+      // @ts-ignore
+      useFetch: true,
     });
     currentClientKey = nextClientKey;
   }
@@ -83,7 +86,27 @@ export const testOssConnection = async (config: OssConfig) => {
     return { success: false, message: error.message || "连接失败" };
   }
 };
-
+export const uploadImageToOssNotCompress = async (config: OssConfig, file: File, _renamePattern?: string) => {
+  const client = getOssClient(config);
+  const timestamp = Date.now();
+  const filename = `${timestamp}_${file.name}`;
+  try {
+    const result = await client.put(filename, file);
+    let url = result.url;
+    // Apply custom domain if configured
+    if (config.customDomain) {
+      let cleanDomain = config.customDomain.replace(/\/$/, "");
+      if (!cleanDomain.startsWith("http")) {
+        cleanDomain = `https://${cleanDomain}`;
+      }
+      url = `${cleanDomain}/${result.name}`;
+    }
+    return { success: true, url, name: result.name };
+  } catch (error: any) {
+    console.error("OSS Upload Error", error);
+    throw new Error(error.message || "上传失败");
+  }
+};
 /**
  * @description 上传图片到阿里云OSS;
  * @param config OSS配置;
@@ -97,9 +120,11 @@ export const uploadImageToOss = async (
   _renamePattern?: string,
   enableCompression?: boolean,
 ) => {
+  // 动态加载：只在函数被调用时才加载
+  const imageCompression = await import('browser-image-compression');
   let upFile = file;
   if (enableCompression !== false) {
-    const options: CompressionOptions = {
+    const options = {
       maxSizeMB: 1, // 目标最大体积 (MB)
       maxWidthOrHeight: 1920, // 目标最大宽/高
       useWebWorker: true, // 启用多线程，推荐
@@ -107,7 +132,7 @@ export const uploadImageToOss = async (
       alwaysKeepResolution: true,
     };
     try {
-      const compressedFile = await imageCompression(file, options);
+      const compressedFile = await imageCompression.default(file, options);
       // 接下来将 compressedFile 上传到 OSS
       console.log("压缩后大小:", compressedFile.size);
       upFile = new File([compressedFile], compressedFile.name, { type: compressedFile.type });
