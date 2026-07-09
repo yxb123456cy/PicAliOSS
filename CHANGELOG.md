@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/yxb123456cy/PicAliOSS/compare/v0.0.3...v0.0.4) (2026-07-09)
+
+
+### Features
+
+* :sparkles: 集成browser-image-compression实现上传前图片压缩 ([0597e7e](https://github.com/yxb123456cy/PicAliOSS/commit/0597e7ee0906ede75bc00fce2ae2030f647e6427))
+
 ### [0.0.3](https://github.com/yxb123456cy/PicAliOSS/compare/v0.0.2...v0.0.3) (2026-07-06)
 
 ### Features
