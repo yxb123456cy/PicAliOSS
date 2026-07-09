@@ -2,6 +2,7 @@ import { defineConfig } from "wxt";
 import Components from "unplugin-vue-components/vite";
 import { PrimeVueResolver } from "@primevue/auto-import-resolver";
 import AutoImport from "unplugin-auto-import/vite";
+import { version } from "./package.json";
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   modules: ["@wxt-dev/module-vue"],
@@ -14,9 +15,9 @@ export default defineConfig({
       email: "2186256471@qq.com",
     },
     // 插件版本号
-    version: "0.1",
+    version: version,
     // 插件版本名称
-    version_name: "V0.1",
+    version_name: `v${version}-beta`,
     // 插件描述
     description: "🚀 轻量级阿里云OSS专用图床浏览器插件 | 专注极简、极速、极稳",
     // 手动指定插件图标

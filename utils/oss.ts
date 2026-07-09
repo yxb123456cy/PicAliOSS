@@ -1,5 +1,6 @@
 import { OssConfig } from "@/typings";
 import OSS from "ali-oss";
+import imageCompression, { Options as CompressionOptions } from "browser-image-compression";
 
 let ossClient: OSS | null = null;
 let currentClientKey = "";
@@ -90,14 +91,35 @@ export const testOssConnection = async (config: OssConfig) => {
  * @param renamePattern 重命名模式;
  * @returns 上传结果;
  */
-export const uploadImageToOss = async (config: OssConfig, file: File, _renamePattern?: string) => {
+export const uploadImageToOss = async (
+  config: OssConfig,
+  file: File,
+  _renamePattern?: string,
+  enableCompression?: boolean,
+) => {
+  let upFile = file;
+  if (enableCompression !== false) {
+    const options: CompressionOptions = {
+      maxSizeMB: 1, // 目标最大体积 (MB)
+      maxWidthOrHeight: 1920, // 目标最大宽/高
+      useWebWorker: true, // 启用多线程，推荐
+      initialQuality: 0.6,
+      alwaysKeepResolution: true,
+    };
+    try {
+      const compressedFile = await imageCompression(file, options);
+      // 接下来将 compressedFile 上传到 OSS
+      console.log("压缩后大小:", compressedFile.size);
+      upFile = new File([compressedFile], compressedFile.name, { type: compressedFile.type });
+    } catch (error) {
+      console.error("压缩失败:", error);
+    }
+  }
   const client = getOssClient(config);
   const timestamp = Date.now();
   const filename = `${timestamp}_${file.name}`;
-
   try {
-    const result = await client.put(filename, file);
-
+    const result = await client.put(filename, upFile);
     let url = result.url;
     // Apply custom domain if configured
     if (config.customDomain) {
@@ -107,7 +129,6 @@ export const uploadImageToOss = async (config: OssConfig, file: File, _renamePat
       }
       url = `${cleanDomain}/${result.name}`;
     }
-
     return { success: true, url, name: result.name };
   } catch (error: any) {
     console.error("OSS Upload Error", error);

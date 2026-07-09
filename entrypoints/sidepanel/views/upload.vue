@@ -68,7 +68,12 @@ const handleFiles = async (files: File[]) => {
   for (let i = 0; i < validFiles.length; i++) {
     const file = validFiles[i];
     try {
-      const res = await uploadImageToOss(settingsStore.ossConfig, file);
+      const res = await uploadImageToOss(
+        settingsStore.ossConfig,
+        file,
+        undefined,
+        settingsStore.enableCompression,
+      );
       if (res.success && res.url) {
         recentUploads.value.unshift({ url: res.url, name: res.name || file.name });
         if (recentUploads.value.length > 5) {

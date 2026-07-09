@@ -7,6 +7,7 @@ import Password from "primevue/password";
 import Button from "primevue/button";
 import { useToast } from "primevue/usetoast";
 import Select from "primevue/select";
+import ToggleSwitch from "primevue/toggleswitch";
 import Divider from "primevue/divider";
 import { SDKRespTransform } from "@/utils/resp";
 import { ossChinaRegionsWithName } from "@/utils/region";
@@ -148,6 +149,16 @@ const saveConfig = async () => {
           class="w-full"
         />
       </div>
+      <div class="field">
+        <label>上传前压缩图片</label>
+        <div class="toggle-row">
+          <ToggleSwitch v-model="settingsStore.enableCompression" />
+          <span class="toggle-label">{{
+            settingsStore.enableCompression ? "已开启" : "已关闭"
+          }}</span>
+        </div>
+        <small>开启后上传图片将自动压缩至 1MB 以内</small>
+      </div>
     </div>
   </div>
 </template>
@@ -183,6 +194,23 @@ const saveConfig = async () => {
     margin-bottom: 6px;
     font-size: 14px;
     color: #475569;
+  }
+
+  small {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .toggle-label {
+      font-size: 13px;
+      color: #64748b;
+    }
   }
 
   :deep(.p-inputtext),

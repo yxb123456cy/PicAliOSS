@@ -20,6 +20,7 @@ export const useSettingsStore = defineStore(
     const isConfigured = ref(false);
     const isLoaded = ref(false);
     const linkFormat = ref<LinkFormat>("markdown");
+    const enableCompression = ref(true);
     let loadConfigPromise: Promise<void> | null = null;
 
     const checkIsConfigured = () => {
@@ -79,6 +80,7 @@ export const useSettingsStore = defineStore(
       isConfigured,
       isLoaded,
       linkFormat,
+      enableCompression,
       loadConfig,
       saveConfig,
       checkIsConfigured,
@@ -86,7 +88,7 @@ export const useSettingsStore = defineStore(
   },
   {
     persist: {
-      pick: ["linkFormat"],
+      pick: ["linkFormat", "enableCompression"],
     },
   },
 );
