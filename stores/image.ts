@@ -39,7 +39,7 @@ export const useImagesStore = defineStore(
         while (isTruncated && loopCount < APP_CONFIG.OSS_LIST_MAX_LOOPS) {
           const response = await listOssImages(
             settingsStore.ossConfig,
-            APP_CONFIG.OSS_TEST_MAX_KEYS,
+            APP_CONFIG.OSS_DEFAULT_PAGE_SIZE,
             continuationToken,
           );
           allImages = allImages.concat(response.images);

@@ -216,10 +216,23 @@ onMounted(() => {
       <Button label="剪贴板上传" icon="pi pi-clipboard" severity="info" @click="checkClipboard" />
     </div>
 
-    <input type="file" ref="fileInput" multiple accept="image/*" style="display: none" @change="onFileSelect" />
+    <input
+      type="file"
+      ref="fileInput"
+      multiple
+      accept="image/*"
+      style="display: none"
+      @change="onFileSelect"
+    />
 
-    <div class="drop-zone" :class="{ 'is-dragging': isDragging }" @dragover.prevent="isDragging = true"
-      @dragleave.prevent="isDragging = false" @drop.prevent="onDrop" @click="triggerFileInput">
+    <div
+      class="drop-zone"
+      :class="{ 'is-dragging': isDragging }"
+      @dragover.prevent="isDragging = true"
+      @dragleave.prevent="isDragging = false"
+      @drop.prevent="onDrop"
+      @click="triggerFileInput"
+    >
       <i class="pi pi-cloud-upload drop-icon"></i>
       <p>将图片拖拽到此处，或点击上传</p>
       <span class="sub-text">支持 JPG, PNG, GIF, WebP, SVG，单张 ≤ 50MB</span>
@@ -237,7 +250,13 @@ onMounted(() => {
           <img :src="item.url" class="thumbnail" />
           <div class="item-info">
             <span class="item-name">{{ item.name }}</span>
-            <Button icon="pi pi-copy" size="small" text @click="copyUrl(item.url, item.name)" title="复制链接" />
+            <Button
+              icon="pi pi-copy"
+              size="small"
+              text
+              @click="copyUrl(item.url, item.name)"
+              title="复制链接"
+            />
           </div>
         </div>
       </div>

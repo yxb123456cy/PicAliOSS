@@ -37,7 +37,7 @@ export const useSettingsStore = defineStore(
       }
 
       loadConfigPromise = (async () => {
-        const result = await chrome.storage.local.get(STORAGE_KEY) as StorageData;
+        const result = (await chrome.storage.local.get(STORAGE_KEY)) as StorageData;
         const storedConfig = result[STORAGE_KEY];
 
         if (storedConfig) {

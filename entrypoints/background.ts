@@ -107,6 +107,19 @@ export default defineBackground(() => {
       showNotification(`上传失败: ${error.message || "未知错误"}`);
     }
   });
+
+  // ---- 处理来自 Content Script 的消息 ----
+  browser.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
+    if (message.type === "SHOW_NOTIFICATION") {
+      const { title, message: msg, iconUrl } = message.payload;
+      browser.notifications.create({
+        type: "basic",
+        iconUrl: iconUrl || "icon/icon-128.png",
+        title: title || "PicAliOSS",
+        message: msg,
+      });
+    }
+  });
 });
 
 /**
