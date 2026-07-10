@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/yxb123456cy/PicAliOSS/compare/v0.0.5...v0.0.6) (2026-07-10)
+
+
+### Features
+
+* **ui:** :sparkles: popup部分UI界面优化 ([4c5818a](https://github.com/yxb123456cy/PicAliOSS/commit/4c5818a838c1ff92e826d62c120d120b65890971))
+
 ### [0.0.5](https://github.com/yxb123456cy/PicAliOSS/compare/v0.0.4...v0.0.5) (2026-07-09)
 
 

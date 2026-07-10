@@ -1,6 +1,6 @@
 {
   "name": "PicAliOSS",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "description": "A lightweight browser extension for uploading and managing images on Alibaba Cloud OSS.",
   "keywords": [
