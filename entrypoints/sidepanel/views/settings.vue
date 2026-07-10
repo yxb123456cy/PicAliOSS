@@ -169,7 +169,7 @@ const saveConfig = async () => {
             settingsStore.enableCompression ? "已开启" : "已关闭"
           }}</span>
         </div>
-        <small>开启后上传图片将自动压缩至 1MB 以内</small>
+        <small>开启后上传图片前自动对图片进行压缩处理</small>
       </div>
     </Panel>
   </div>

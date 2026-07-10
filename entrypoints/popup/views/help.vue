@@ -1,14 +1,15 @@
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 import Accordion from "primevue/accordion";
 import AccordionPanel from "primevue/accordionpanel";
 import AccordionHeader from "primevue/accordionheader";
 import AccordionContent from "primevue/accordioncontent";
-
+import { version } from '../../../package.json'
 const faqs = [
   {
     title: "如何配置阿里云OSS？",
     content:
-      "1. 登录阿里云控制台，进入OSS管理控制台。\n2. 创建一个Bucket，读写权限建议设置为“公共读”。\n3. 获取AccessKey ID和AccessKey Secret（建议使用RAM子账号，并仅授予OSS管理权限）。\n4. 将这些信息填入插件的“设置”页面中即可。",
+      "1. 登录阿里云控制台，进入OSS管理控制台。\n2. 创建一个Bucket，读写权限建议设置为\u201C公共读\u201D。\n3. 获取AccessKey ID和AccessKey Secret（建议使用RAM子账号，并仅授予OSS管理权限）。\n4. 将这些信息填入插件的\u201C设置\u201D页面中即可。",
   },
   {
     title: "为什么上传失败？",
@@ -18,16 +19,15 @@ const faqs = [
   {
     title: "图片列表加载缓慢？",
     content:
-      "图片列表加载速度取决于您的网络以及OSS中的图片数量。插件已默认使用本地缓存以提升加载速度。如需查看最新图片，可点击列表页的“刷新”按钮。",
+      "图片列表加载速度取决于您的网络以及OSS中的图片数量。插件已默认使用本地缓存以提升加载速度。如需查看最新图片，可点击列表页的\u201C刷新\u201D按钮。",
   },
 ];
 
 const env = import.meta.env;
 
 const pluginInfo = {
-  emojiIcon: env.VITE_APP_EMOJI_ICON || "🧡",
   name: env.VITE_APP_NAME || "PicAliOSS",
-  version: env.VITE_APP_VERSION || "v0.1",
+  version: env.VITE_APP_VERSION || `V${version}`,
   author: env.VITE_APP_AUTHOR || "程序员轻叶",
   description: env.VITE_APP_DESCRIPTION || "轻量级阿里云 OSS 图床浏览器插件。",
   bio:
@@ -38,35 +38,35 @@ const pluginInfo = {
 
 const techStacks = [
   {
-    emoji: "🧩",
+    icon: "mdi:puzzle-outline",
     title: "WXT + Manifest V3",
     description:
       "负责浏览器插件工程化、开发热更新、入口拆分与后续 Chrome / Firefox / Edge 的扩展适配基础。",
   },
   {
-    emoji: "💚",
+    icon: "mdi:vuejs",
     title: "Vue 3 + Composition API",
     description:
       "承载 Popup 界面与交互逻辑，适合拆分上传、管理、设置、帮助等功能视图，保证界面迭代效率。",
   },
   {
-    emoji: "🔷",
+    icon: "mdi:language-typescript",
     title: "TypeScript",
     description:
       "为 OSS 配置、图片列表、工具函数和状态管理提供类型约束，降低插件长期维护时的回归风险。",
   },
   {
-    emoji: "🎨",
+    icon: "mdi:palette-outline",
     title: "PrimeVue",
     description: "提供统一的组件体系与主题能力，适配插件小窗场景，当前已结合品牌主色做视觉定制。",
   },
   {
-    emoji: "☁️",
+    icon: "mdi:cloud-outline",
     title: "Aliyun OSS SDK",
     description: "负责图片上传、文件查询、链接生成与资源删除，是整个图床能力的核心存储服务层。",
   },
   {
-    emoji: "🔐",
+    icon: "mdi:shield-key-outline",
     title: "Chrome Storage + AES",
     description:
       "用于本地保存并加密 OSS 配置，尽量避免明文暴露敏感信息，兼顾插件端易用性与基础安全性。",
@@ -82,9 +82,7 @@ const techStacks = [
         <AccordionPanel v-for="(faq, index) in faqs" :key="index" :value="index">
           <AccordionHeader>{{ faq.title }}</AccordionHeader>
           <AccordionContent>
-            <p style="white-space: pre-wrap; font-size: 14px; color: #475569; margin: 0">
-              {{ faq.content }}
-            </p>
+            <p class="faq-content">{{ faq.content }}</p>
           </AccordionContent>
         </AccordionPanel>
       </Accordion>
@@ -94,7 +92,9 @@ const techStacks = [
       <h3 class="section-title">关于</h3>
       <div class="about-info">
         <div class="about-hero">
-          <div class="icon-box">{{ pluginInfo.emojiIcon }}</div>
+          <div class="icon-box">
+            <Icon icon="mdi:cloud-upload-outline" width="22" height="22" />
+          </div>
           <div class="hero-content">
             <div class="hero-title-row">
               <h4>{{ pluginInfo.name }}</h4>
@@ -122,7 +122,9 @@ const techStacks = [
           <h4 class="tech-title">技术栈说明</h4>
           <div class="tech-list">
             <div v-for="item in techStacks" :key="item.title" class="tech-item">
-              <div class="tech-icon">{{ item.emoji }}</div>
+              <div class="tech-icon">
+                <Icon :icon="item.icon" width="16" height="16" />
+              </div>
               <div class="tech-content">
                 <div class="tech-name">{{ item.title }}</div>
                 <p>{{ item.description }}</p>
@@ -136,9 +138,8 @@ const techStacks = [
 </template>
 
 <style scoped lang="scss">
-// use custom global scss styles variable
 .help-page {
-  padding: 16px;
+  padding: 12px;
   height: 100%;
   box-sizing: border-box;
   overflow-y: auto;
@@ -146,46 +147,54 @@ const techStacks = [
 }
 
 .section {
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 
 .section-title {
   margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 16px;
+  margin-bottom: 10px;
+  font-size: 14px;
   color: $cus-text-color;
   font-weight: 600;
 }
 
+.faq-content {
+  white-space: pre-wrap;
+  font-size: 12px;
+  color: #475569;
+  margin: 0;
+  line-height: 1.5;
+}
+
 .about-info {
   background: white;
-  padding: 18px;
+  padding: 12px;
   border-radius: $cus-border-radius;
   border: 1px solid #e2e8f0;
-  font-size: 14px;
+  font-size: 13px;
   color: #475569;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
 
   .about-hero {
     display: flex;
     align-items: flex-start;
-    gap: 14px;
-    padding-bottom: 16px;
-    margin-bottom: 16px;
+    gap: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
     border-bottom: 1px solid #f1f5f9;
   }
 
   .icon-box {
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
     background: linear-gradient(135deg, #fff2eb 0%, #ffe2d5 100%);
     box-shadow: inset 0 0 0 1px #ffd2bd;
     flex-shrink: 0;
+    color: #f97316;
   }
 
   .hero-content {
@@ -196,14 +205,14 @@ const techStacks = [
   .hero-title-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
   }
 
   h4 {
     margin: 0;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
     color: #1e293b;
   }
@@ -212,9 +221,9 @@ const techStacks = [
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 10px;
+    padding: 3px 8px;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: #c2410c;
     background: #fff1eb;
@@ -224,7 +233,8 @@ const techStacks = [
   .hero-description,
   .hero-bio {
     margin: 0;
-    line-height: 1.6;
+    line-height: 1.4;
+    font-size: 13px;
   }
 
   .hero-description {
@@ -233,34 +243,34 @@ const techStacks = [
   }
 
   .hero-bio {
-    margin-top: 6px;
+    margin-top: 4px;
     color: #64748b;
   }
 
   .meta-grid {
     display: grid;
-    gap: 12px;
-    margin-bottom: 18px;
+    gap: 8px;
+    margin-bottom: 12px;
   }
 
   .meta-item {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 12px;
-    border-radius: 12px;
+    gap: 3px;
+    padding: 8px;
+    border-radius: 8px;
     background: #f8fafc;
     border: 1px solid #e2e8f0;
   }
 
   .meta-label {
-    font-size: 12px;
+    font-size: 11px;
     color: #64748b;
   }
 
   .meta-value,
   .meta-link {
-    font-size: 14px;
+    font-size: 13px;
     color: #0f172a;
     font-weight: 600;
     word-break: break-all;
@@ -276,8 +286,8 @@ const techStacks = [
   }
 
   .tech-title {
-    margin: 0 0 12px 0;
-    font-size: 15px;
+    margin: 0 0 8px 0;
+    font-size: 13px;
     font-weight: 700;
     color: #1e293b;
   }
@@ -285,29 +295,29 @@ const techStacks = [
   .tech-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
   }
 
   .tech-item {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    padding: 12px;
-    border-radius: 12px;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 8px;
     background: linear-gradient(180deg, #ffffff 0%, #fffaf7 100%);
     border: 1px solid #f1f5f9;
   }
 
   .tech-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
     background: #fff2eb;
     flex-shrink: 0;
+    color: #f97316;
   }
 
   .tech-content {
@@ -315,16 +325,16 @@ const techStacks = [
   }
 
   .tech-name {
-    margin-bottom: 4px;
-    font-size: 14px;
+    margin-bottom: 2px;
+    font-size: 13px;
     font-weight: 700;
     color: #1e293b;
   }
 
   p {
     margin: 0;
-    line-height: 1.6;
-
+    line-height: 1.4;
+    font-size: 12px;
     color: #64748b;
   }
 }
