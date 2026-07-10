@@ -6,6 +6,7 @@ import { useSettingsStore } from "../store/settings";
 import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import ProgressBar from "primevue/progressbar";
+import { APP_CONFIG } from "@/constants/config";
 
 const settingsStore = useSettingsStore();
 const toast = useToast();
@@ -20,7 +21,12 @@ const recentUploads = ref<{ url: string; name: string }[]>([]);
 
 const triggerFileInput = () => {
   if (!settingsStore.isConfigured) {
-    toast.add({ severity: "warn", summary: "提示", detail: "请先完成OSS配置", life: 3000 });
+    toast.add({
+      severity: "warn",
+      summary: "提示",
+      detail: "请先完成OSS配置",
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
+    });
     return;
   }
   fileInput.value?.click();
@@ -37,7 +43,12 @@ const onFileSelect = async (event: Event) => {
 const onDrop = async (event: DragEvent) => {
   isDragging.value = false;
   if (!settingsStore.isConfigured) {
-    toast.add({ severity: "warn", summary: "提示", detail: "请先完成OSS配置", life: 3000 });
+    toast.add({
+      severity: "warn",
+      summary: "提示",
+      detail: "请先完成OSS配置",
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
+    });
     return;
   }
   if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
@@ -47,15 +58,15 @@ const onDrop = async (event: DragEvent) => {
 
 const handleFiles = async (files: File[]) => {
   const validFiles = files
-    .filter((f) => f.type.startsWith("image/") && f.size <= 50 * 1024 * 1024)
-    .slice(0, 10);
+    .filter((f) => f.type.startsWith("image/") && f.size <= APP_CONFIG.MAX_FILE_SIZE_BYTES)
+    .slice(0, APP_CONFIG.MAX_UPLOAD_COUNT);
 
   if (validFiles.length === 0) {
     toast.add({
       severity: "error",
       summary: "错误",
       detail: "请选择有效的图片文件（单张≤50MB）",
-      life: 3000,
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
     });
     return;
   }
@@ -75,13 +86,18 @@ const handleFiles = async (files: File[]) => {
       );
       if (res.success && res.url) {
         recentUploads.value.unshift({ url: res.url, name: res.name || file.name });
-        if (recentUploads.value.length > 3) {
+        if (recentUploads.value.length > APP_CONFIG.RECENT_UPLOADS_LIMIT) {
           recentUploads.value.pop();
         }
         successCount++;
       }
     } catch (error: any) {
-      toast.add({ severity: "error", summary: "上传失败", detail: error.message, life: 3000 });
+      toast.add({
+        severity: "error",
+        summary: "上传失败",
+        detail: error.message,
+        life: APP_CONFIG.TOAST_DURATION_ERROR,
+      });
     }
     uploadProgress.value = Math.round(((i + 1) / validFiles.length) * 100);
   }
@@ -93,7 +109,7 @@ const handleFiles = async (files: File[]) => {
       severity: "success",
       summary: "上传成功",
       detail: `成功上传 ${successCount} 张图片`,
-      life: 3000,
+      life: APP_CONFIG.TOAST_DURATION_SUCCESS,
     });
   }
 };
@@ -101,13 +117,18 @@ const handleFiles = async (files: File[]) => {
 // 截图上传
 const captureScreen = async () => {
   if (!settingsStore.isConfigured) {
-    toast.add({ severity: "warn", summary: "提示", detail: "请先完成OSS配置", life: 3000 });
+    toast.add({
+      severity: "warn",
+      summary: "提示",
+      detail: "请先完成OSS配置",
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
+    });
     return;
   }
   try {
     // 调用 Chrome tabs API 截图
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (tab && tab.windowId) {
+    if (tab?.windowId) {
       const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, { format: "png" });
 
       // dataUrl to File
@@ -118,7 +139,12 @@ const captureScreen = async () => {
       await handleFiles([file]);
     }
   } catch (error: any) {
-    toast.add({ severity: "error", summary: "截图失败", detail: error.message, life: 3000 });
+    toast.add({
+      severity: "error",
+      summary: "截图失败",
+      detail: error.message,
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
+    });
   }
 };
 
@@ -153,10 +179,20 @@ const copyUrl = (url: string, name: string) => {
   navigator.clipboard
     .writeText(link)
     .then(() => {
-      toast.add({ severity: "success", summary: "成功", detail: "链接已复制到剪贴板", life: 2000 });
+      toast.add({
+        severity: "success",
+        summary: "成功",
+        detail: "链接已复制到剪贴板",
+        life: APP_CONFIG.TOAST_DURATION_SUCCESS,
+      });
     })
     .catch(() => {
-      toast.add({ severity: "error", summary: "失败", detail: "复制失败", life: 2000 });
+      toast.add({
+        severity: "error",
+        summary: "失败",
+        detail: "复制失败",
+        life: APP_CONFIG.TOAST_DURATION_ERROR,
+      });
     });
 };
 
@@ -180,23 +216,10 @@ onMounted(() => {
       <Button label="剪贴板上传" icon="pi pi-clipboard" severity="info" @click="checkClipboard" />
     </div>
 
-    <input
-      type="file"
-      ref="fileInput"
-      multiple
-      accept="image/*"
-      style="display: none"
-      @change="onFileSelect"
-    />
+    <input type="file" ref="fileInput" multiple accept="image/*" style="display: none" @change="onFileSelect" />
 
-    <div
-      class="drop-zone"
-      :class="{ 'is-dragging': isDragging }"
-      @dragover.prevent="isDragging = true"
-      @dragleave.prevent="isDragging = false"
-      @drop.prevent="onDrop"
-      @click="triggerFileInput"
-    >
+    <div class="drop-zone" :class="{ 'is-dragging': isDragging }" @dragover.prevent="isDragging = true"
+      @dragleave.prevent="isDragging = false" @drop.prevent="onDrop" @click="triggerFileInput">
       <i class="pi pi-cloud-upload drop-icon"></i>
       <p>将图片拖拽到此处，或点击上传</p>
       <span class="sub-text">支持 JPG, PNG, GIF, WebP, SVG，单张 ≤ 50MB</span>
@@ -214,13 +237,7 @@ onMounted(() => {
           <img :src="item.url" class="thumbnail" />
           <div class="item-info">
             <span class="item-name">{{ item.name }}</span>
-            <Button
-              icon="pi pi-copy"
-              size="small"
-              text
-              @click="copyUrl(item.url, item.name)"
-              title="复制链接"
-            />
+            <Button icon="pi pi-copy" size="small" text @click="copyUrl(item.url, item.name)" title="复制链接" />
           </div>
         </div>
       </div>

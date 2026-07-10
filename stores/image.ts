@@ -2,13 +2,8 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { deleteOssImage, listOssImages } from "@/utils/oss";
 import { useSettingsStore } from "@/stores/settings";
-
-export interface OssImage {
-  name: string;
-  url: string;
-  lastModified: string;
-  size: number;
-}
+import { OssImage } from "@/typings";
+import { APP_CONFIG } from "@/constants/config";
 
 export const useImagesStore = defineStore(
   "images",
@@ -17,7 +12,7 @@ export const useImagesStore = defineStore(
     const isLoading = ref(false);
     const lastFetchTime = ref(0);
 
-    const fetchImages = async (forceRefresh = false) => {
+    const fetchImages = async (forceRefresh = false): Promise<void> => {
       const settingsStore = useSettingsStore();
 
       if (!settingsStore.isConfigured) {
@@ -28,7 +23,7 @@ export const useImagesStore = defineStore(
       if (
         !forceRefresh &&
         images.value.length > 0 &&
-        Date.now() - lastFetchTime.value < 5 * 60 * 1000
+        Date.now() - lastFetchTime.value < APP_CONFIG.IMAGE_CACHE_DURATION_MS
       ) {
         return;
       }
@@ -41,8 +36,12 @@ export const useImagesStore = defineStore(
         let isTruncated = true;
         let loopCount = 0;
 
-        while (isTruncated && loopCount < 10) {
-          const response = await listOssImages(settingsStore.ossConfig, 100, continuationToken);
+        while (isTruncated && loopCount < APP_CONFIG.OSS_LIST_MAX_LOOPS) {
+          const response = await listOssImages(
+            settingsStore.ossConfig,
+            APP_CONFIG.OSS_TEST_MAX_KEYS,
+            continuationToken,
+          );
           allImages = allImages.concat(response.images);
           isTruncated = response.isTruncated;
           continuationToken = response.nextContinuationToken;
@@ -63,14 +62,14 @@ export const useImagesStore = defineStore(
       }
     };
 
-    const removeImage = async (name: string) => {
+    const removeImage = async (name: string): Promise<void> => {
       const settingsStore = useSettingsStore();
 
       await deleteOssImage(settingsStore.ossConfig, name);
       images.value = images.value.filter((img) => img.name !== name);
     };
 
-    const clearCache = () => {
+    const clearCache = (): void => {
       images.value = [];
       lastFetchTime.value = 0;
     };

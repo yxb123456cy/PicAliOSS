@@ -23,9 +23,9 @@ const APP_SETTINGS_KEY = "appSettings";
 
 interface Q {
   appSettings: {
-    enableCompression: boolean
-    linkFormat: LinkFormat
-  }
+    enableCompression: boolean;
+    linkFormat: LinkFormat;
+  };
 }
 // ============================================================
 // background 是一个无界面、轻量级的后台 Service Worker

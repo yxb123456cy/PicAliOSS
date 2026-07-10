@@ -27,12 +27,20 @@ export default defineConfig({
       "48": "icon/icon-48.png",
       "128": "icon/icon-128.png",
     },
-    permissions: ["storage", "activeTab", "clipboardRead", "clipboardWrite", "sidePanel", "contextMenus", "notifications"],
+    permissions: [
+      "storage",
+      "activeTab",
+      "clipboardRead",
+      "clipboardWrite",
+      "sidePanel",
+      "contextMenus",
+      "notifications",
+    ],
     host_permissions: ["<all_urls>"],
     browser_specific_settings: {
       gecko: {
         // 火狐浏览器数据收集权限配置（仅Firefox支持，忽略TypeScript类型检查）
-        // @ts-ignore
+        // @ts-expect-error
         data_collection_permissions: {
           required: ["none"],
         },

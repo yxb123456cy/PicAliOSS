@@ -7,3 +7,9 @@ export interface OssConfig {
   region: string;
   customDomain?: string;
 }
+export interface OssImage {
+  name: string;
+  url: string;
+  lastModified: string;
+  size: number;
+}

@@ -7,7 +7,11 @@ import { LinkFormat } from "@/typings";
  * @param format 链接格式;
  * @returns 格式化后的链接;
  */
-export const formatLink = (url: string, filename?: string, format: LinkFormat = "markdown") => {
+export const formatLink = (
+  url: string,
+  filename?: string,
+  format: LinkFormat = "markdown",
+): string => {
   if (format === "markdown") {
     return `![${filename || "image"}](${url})`;
   }

@@ -13,6 +13,7 @@ import { SDKRespTransform } from "@/utils/resp";
 import { ossChinaRegionsWithName } from "@/utils/region";
 import Panel from "primevue/panel";
 import { LinkFormat, OssConfig } from "@/typings";
+import { APP_CONFIG } from "@/constants/config";
 
 const settingsStore = useSettingsStore();
 const toast = useToast();
@@ -64,14 +65,14 @@ const saveConfig = async () => {
         severity: "success",
         summary: "配置已保存",
         detail: "OSS 连接测试通过",
-        life: 3000,
+        life: APP_CONFIG.TOAST_DURATION_SUCCESS,
       });
     } else {
       toast.add({
         severity: "error",
         summary: "配置校验失败",
         detail: SDKRespTransform(res.message),
-        life: 3000,
+        life: APP_CONFIG.TOAST_DURATION_ERROR,
       });
     }
   } catch (err: any) {
@@ -79,7 +80,7 @@ const saveConfig = async () => {
       severity: "error",
       summary: "保存失败",
       detail: err.message || "未知错误",
-      life: 3000,
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
     });
   } finally {
     isTesting.value = false;

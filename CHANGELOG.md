@@ -4,17 +4,15 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.0.6](https://github.com/yxb123456cy/PicAliOSS/compare/v0.0.5...v0.0.6) (2026-07-10)
 
-
 ### Features
 
-* **ui:** :sparkles: popup部分UI界面优化 ([4c5818a](https://github.com/yxb123456cy/PicAliOSS/commit/4c5818a838c1ff92e826d62c120d120b65890971))
+- **ui:** :sparkles: popup部分UI界面优化 ([4c5818a](https://github.com/yxb123456cy/PicAliOSS/commit/4c5818a838c1ff92e826d62c120d120b65890971))
 
 ### [0.0.5](https://github.com/yxb123456cy/PicAliOSS/compare/v0.0.4...v0.0.5) (2026-07-09)
 
-
 ### Features
 
-* :sparkles: 实现选中网页图片右键菜单上传至阿里云OSS ([168e3ec](https://github.com/yxb123456cy/PicAliOSS/commit/168e3ec61429d8e5dde36d22af31704e096bb62e))
+- :sparkles: 实现选中网页图片右键菜单上传至阿里云OSS ([168e3ec](https://github.com/yxb123456cy/PicAliOSS/commit/168e3ec61429d8e5dde36d22af31704e096bb62e))
 
 ### [0.0.4](https://github.com/yxb123456cy/PicAliOSS/compare/v0.0.3...v0.0.4) (2026-07-09)
 

@@ -1,3 +1,4 @@
+import { APP_CONFIG } from "@/constants/config";
 import { OssConfig } from "@/typings";
 import OSS from "ali-oss";
 // import imageCompression, { Options as CompressionOptions } from "browser-image-compression";
@@ -23,7 +24,7 @@ const IMAGE_EXTENSIONS = new Set([
  * @param name 文件名;
  * @returns 是否为图片文件;
  */
-const isImageFile = (name: string) => {
+const isImageFile = (name: string): boolean => {
   // 去除空格并转换为小写;
   const normalizedName = name.trim().toLowerCase();
   // 检查文件名是否以图片扩展名结尾;有一个符合就行;
@@ -35,7 +36,7 @@ const isImageFile = (name: string) => {
  * @param config OSS配置;
  * @returns OSS客户端实例;
  */
-export const getOssClient = (config: OssConfig) => {
+export const getOssClient = (config: OssConfig): OSS => {
   if (
     !config ||
     !config.accessKeyId ||
@@ -46,7 +47,7 @@ export const getOssClient = (config: OssConfig) => {
     throw new Error("OSS Config is missing required fields");
   }
 
-  const nextClientKey = JSON.stringify({
+  const nextClientKey: string = JSON.stringify({
     accessKeyId: config.accessKeyId,
     accessKeySecret: config.accessKeySecret,
     bucket: config.bucket,
@@ -61,7 +62,7 @@ export const getOssClient = (config: OssConfig) => {
       bucket: config.bucket,
       secure: true,
       // 使用 fetch API，兼容 Service Worker 环境
-      // @ts-ignore
+      // @ts-expect-error
       useFetch: true,
     });
     currentClientKey = nextClientKey;
@@ -75,18 +76,24 @@ export const getOssClient = (config: OssConfig) => {
  * @param config OSS配置;
  * @returns 测试结果;
  */
-export const testOssConnection = async (config: OssConfig) => {
+export const testOssConnection = async (
+  config: OssConfig,
+): Promise<{ success: boolean; message: string }> => {
   try {
     const client = getOssClient(config);
     // list buckets or just put an empty file to test
     // actually `listBuckets` requires full permission, `list` is safer if the key only has bucket permissions
-    await client.listV2({ "max-keys": 1 });
+    await client.listV2({ "max-keys": APP_CONFIG.OSS_TEST_MAX_KEYS });
     return { success: true, message: "配置成功" };
   } catch (error: any) {
     return { success: false, message: error.message || "连接失败" };
   }
 };
-export const uploadImageToOssNotCompress = async (config: OssConfig, file: File, _renamePattern?: string) => {
+export const uploadImageToOssNotCompress = async (
+  config: OssConfig,
+  file: File,
+  _renamePattern?: string,
+): Promise<{ success: boolean; url: string; name: string }> => {
   const client = getOssClient(config);
   const timestamp = Date.now();
   const filename = `${timestamp}_${file.name}`;
@@ -119,16 +126,16 @@ export const uploadImageToOss = async (
   file: File,
   _renamePattern?: string,
   enableCompression?: boolean,
-) => {
+): Promise<{ success: boolean; url: string; name: string }> => {
   // 动态加载：只在函数被调用时才加载
-  const imageCompression = await import('browser-image-compression');
+  const imageCompression = await import("browser-image-compression");
   let upFile = file;
   if (enableCompression !== false) {
     const options = {
-      maxSizeMB: 1, // 目标最大体积 (MB)
-      maxWidthOrHeight: 1920, // 目标最大宽/高
+      maxSizeMB: APP_CONFIG.COMPRESSION.MAX_SIZE_MB, // 目标最大体积 (MB)
+      maxWidthOrHeight: APP_CONFIG.COMPRESSION.MAX_WIDTH_OR_HEIGHT, // 目标最大宽/高
       useWebWorker: true, // 启用多线程，推荐
-      initialQuality: 0.6,
+      initialQuality: APP_CONFIG.COMPRESSION.INITIAL_QUALITY,
       alwaysKeepResolution: true,
     };
     try {
@@ -170,9 +177,18 @@ export const uploadImageToOss = async (
  */
 export const listOssImages = async (
   config: OssConfig,
-  maxKeys: number = 50,
+  maxKeys: number = APP_CONFIG.OSS_DEFAULT_PAGE_SIZE,
   continuationToken?: string,
-) => {
+): Promise<{
+  images: {
+    name: string;
+    url: string;
+    lastModified: string;
+    size: number;
+  }[];
+  nextContinuationToken?: string;
+  isTruncated: boolean;
+}> => {
   const client = getOssClient(config);
   const options: any = {
     "max-keys": maxKeys,
@@ -217,7 +233,7 @@ export const listOssImages = async (
  * @param name 图片文件名;
  * @returns 删除结果;
  */
-export const deleteOssImage = async (config: OssConfig, name: string) => {
+export const deleteOssImage = async (config: OssConfig, name: string): Promise<void> => {
   const client = getOssClient(config);
   await client.delete(name);
 };

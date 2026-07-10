@@ -7,6 +7,7 @@ import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import ProgressBar from "primevue/progressbar";
 import Chip from "primevue/chip";
+import { APP_CONFIG } from "@/constants/config";
 
 const settingsStore = useSettingsStore();
 const toast = useToast();
@@ -21,7 +22,12 @@ const recentUploads = ref<{ url: string; name: string }[]>([]);
 
 const triggerFileInput = () => {
   if (!settingsStore.isConfigured) {
-    toast.add({ severity: "warn", summary: "提示", detail: "请先完成OSS配置", life: 3000 });
+    toast.add({
+      severity: "warn",
+      summary: "提示",
+      detail: "请先完成OSS配置",
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
+    });
     return;
   }
   fileInput.value?.click();
@@ -38,7 +44,12 @@ const onFileSelect = async (event: Event) => {
 const onDrop = async (event: DragEvent) => {
   isDragging.value = false;
   if (!settingsStore.isConfigured) {
-    toast.add({ severity: "warn", summary: "提示", detail: "请先完成OSS配置", life: 3000 });
+    toast.add({
+      severity: "warn",
+      summary: "提示",
+      detail: "请先完成OSS配置",
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
+    });
     return;
   }
   if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
@@ -56,7 +67,7 @@ const handleFiles = async (files: File[]) => {
       severity: "error",
       summary: "错误",
       detail: "请选择有效的图片文件（单张≤50MB）",
-      life: 3000,
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
     });
     return;
   }
@@ -82,7 +93,12 @@ const handleFiles = async (files: File[]) => {
         successCount++;
       }
     } catch (error: any) {
-      toast.add({ severity: "error", summary: "上传失败", detail: error.message, life: 3000 });
+      toast.add({
+        severity: "error",
+        summary: "上传失败",
+        detail: error.message,
+        life: APP_CONFIG.TOAST_DURATION_ERROR,
+      });
     }
     uploadProgress.value = Math.round(((i + 1) / validFiles.length) * 100);
   }
@@ -94,14 +110,19 @@ const handleFiles = async (files: File[]) => {
       severity: "success",
       summary: "上传成功",
       detail: `成功上传 ${successCount} 张图片`,
-      life: 3000,
+      life: APP_CONFIG.TOAST_DURATION_SUCCESS,
     });
   }
 };
 
 const captureScreen = async () => {
   if (!settingsStore.isConfigured) {
-    toast.add({ severity: "warn", summary: "提示", detail: "请先完成OSS配置", life: 3000 });
+    toast.add({
+      severity: "warn",
+      summary: "提示",
+      detail: "请先完成OSS配置",
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
+    });
     return;
   }
   try {
@@ -114,7 +135,12 @@ const captureScreen = async () => {
       await handleFiles([file]);
     }
   } catch (error: any) {
-    toast.add({ severity: "error", summary: "截图失败", detail: error.message, life: 3000 });
+    toast.add({
+      severity: "error",
+      summary: "截图失败",
+      detail: error.message,
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
+    });
   }
 };
 
@@ -149,11 +175,16 @@ const copyUrl = (url: string, name: string) => {
         severity: "success",
         summary: "已复制",
         detail: "链接已复制到剪贴板",
-        life: 2000,
+        life: APP_CONFIG.TOAST_DURATION_SUCCESS,
       });
     })
     .catch(() => {
-      toast.add({ severity: "error", summary: "失败", detail: "复制失败", life: 2000 });
+      toast.add({
+        severity: "error",
+        summary: "失败",
+        detail: "复制失败",
+        life: APP_CONFIG.TOAST_DURATION_ERROR,
+      });
     });
 };
 </script>

@@ -3,7 +3,7 @@
  * @param message 原始错误信息;
  * @returns 优化后的中文错误信息;
  */
-export function SDKRespTransform(message: string) {
+export function SDKRespTransform(message: string): string {
   switch (message) {
     case "The specified bucket does not exist.":
       return "指定的存储桶不存在!";

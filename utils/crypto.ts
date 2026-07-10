@@ -7,7 +7,7 @@ const SECRET_KEY = "PicAliOSS_Secret_Key_V1";
  * @param word 待加密的内容;
  * @returns 加密后的内容;
  */
-export const encrypt = (word: string) => {
+export const encrypt = (word: string): string => {
   // AES加密;
   return CryptoJS.AES.encrypt(word, SECRET_KEY).toString();
 };
@@ -17,7 +17,7 @@ export const encrypt = (word: string) => {
  * @param word 待解密的内容;
  * @returns 解密后的内容;
  */
-export const decrypt = (word: string) => {
+export const decrypt = (word: string): string => {
   try {
     // AES解密;
     const bytes = CryptoJS.AES.decrypt(word, SECRET_KEY);

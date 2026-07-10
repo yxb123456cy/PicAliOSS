@@ -5,6 +5,9 @@ import { LinkFormat, OssConfig } from "@/typings";
 
 const STORAGE_KEY = "ossConfig";
 
+interface StorageData {
+  [STORAGE_KEY]?: string;
+}
 const createDefaultOssConfig = (): OssConfig => ({
   accessKeyId: "",
   accessKeySecret: "",
@@ -23,19 +26,19 @@ export const useSettingsStore = defineStore(
     const enableCompression = ref(true);
     let loadConfigPromise: Promise<void> | null = null;
 
-    const checkIsConfigured = () => {
+    const checkIsConfigured = (): void => {
       const { accessKeyId, accessKeySecret, bucket, region } = ossConfig.value;
       isConfigured.value = !!(accessKeyId && accessKeySecret && bucket && region);
     };
 
-    const loadConfig = async () => {
+    const loadConfig = async (): Promise<void> => {
       if (loadConfigPromise) {
         return loadConfigPromise;
       }
 
       loadConfigPromise = (async () => {
-        const result = await chrome.storage.local.get(STORAGE_KEY);
-        const storedConfig = result[STORAGE_KEY] as string | undefined;
+        const result = await chrome.storage.local.get(STORAGE_KEY) as StorageData;
+        const storedConfig = result[STORAGE_KEY];
 
         if (storedConfig) {
           try {
@@ -63,7 +66,7 @@ export const useSettingsStore = defineStore(
       }
     };
 
-    const saveConfig = async (config: OssConfig) => {
+    const saveConfig = async (config: OssConfig): Promise<void> => {
       const nextConfig = {
         ...createDefaultOssConfig(),
         ...config,
@@ -74,14 +77,18 @@ export const useSettingsStore = defineStore(
       ossConfig.value = nextConfig;
       checkIsConfigured();
     };
-    watch([enableCompression, linkFormat], () => {
-      chrome.storage.local.set({
-        appSettings: {
-          enableCompression: enableCompression.value,
-          linkFormat: linkFormat.value,
-        },
-      });
-    }, { immediate: true }); // immediate: true 确保初始化时写入
+    watch(
+      [enableCompression, linkFormat],
+      () => {
+        chrome.storage.local.set({
+          appSettings: {
+            enableCompression: enableCompression.value,
+            linkFormat: linkFormat.value,
+          },
+        });
+      },
+      { immediate: true },
+    ); // immediate: true 确保初始化时写入
     return {
       ossConfig,
       isConfigured,

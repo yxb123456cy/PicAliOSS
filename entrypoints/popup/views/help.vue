@@ -4,7 +4,7 @@ import Accordion from "primevue/accordion";
 import AccordionPanel from "primevue/accordionpanel";
 import AccordionHeader from "primevue/accordionheader";
 import AccordionContent from "primevue/accordioncontent";
-import { version } from '../../../package.json'
+import { version } from "../../../package.json";
 const faqs = [
   {
     title: "如何配置阿里云OSS？",

@@ -11,6 +11,7 @@ import Dialog from "primevue/dialog";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import Tag from "primevue/tag";
+import { APP_CONFIG } from "@/constants/config";
 
 const imagesStore = useImagesStore();
 const settingsStore = useSettingsStore();
@@ -18,7 +19,7 @@ const toast = useToast();
 
 const searchQuery = ref("");
 const currentPage = ref(1);
-const pageSize = ref(12);
+const pageSize = ref(APP_CONFIG.PAGE_SIZE_GRID);
 const selectedImages = ref<string[]>([]);
 const previewUrl = ref("");
 const showPreview = ref(false);
@@ -29,21 +30,41 @@ onMounted(async () => {
     try {
       await imagesStore.fetchImages();
     } catch (e: any) {
-      toast.add({ severity: "error", summary: "加载失败", detail: e.message, life: 3000 });
+      toast.add({
+        severity: "error",
+        summary: "加载失败",
+        detail: e.message,
+        life: APP_CONFIG.TOAST_DURATION_ERROR,
+      });
     }
   }
 });
 
 const refresh = async () => {
   if (!settingsStore.isConfigured) {
-    toast.add({ severity: "warn", summary: "提示", detail: "请先完成OSS配置", life: 3000 });
+    toast.add({
+      severity: "warn",
+      summary: "提示",
+      detail: "请先完成OSS配置",
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
+    });
     return;
   }
   try {
     await imagesStore.fetchImages(true);
-    toast.add({ severity: "success", summary: "刷新成功", detail: "已更新图片列表", life: 2000 });
+    toast.add({
+      severity: "success",
+      summary: "刷新成功",
+      detail: "已更新图片列表",
+      life: APP_CONFIG.TOAST_DURATION_SUCCESS,
+    });
   } catch (e: any) {
-    toast.add({ severity: "error", summary: "刷新失败", detail: e.message, life: 3000 });
+    toast.add({
+      severity: "error",
+      summary: "刷新失败",
+      detail: e.message,
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
+    });
   }
 };
 
@@ -65,7 +86,7 @@ const paginatedImages = computed(() => {
 
 const formatSize = (bytes: number) => {
   if (bytes === 0) return "0 B";
-  const k = 1024;
+  const k = APP_CONFIG.BYTES_PER_KB;
   const sizes = ["B", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
@@ -88,7 +109,7 @@ const copyLink = (url: string, name?: string) => {
       severity: "success",
       summary: "复制成功",
       detail: "链接已复制到剪贴板",
-      life: 2000,
+      life: APP_CONFIG.TOAST_DURATION_SUCCESS,
     });
   });
 };
@@ -106,9 +127,19 @@ const downloadImage = async (url: string, name: string) => {
     a.click();
     window.URL.revokeObjectURL(blobUrl);
     document.body.removeChild(a);
-    toast.add({ severity: "success", summary: "下载成功", detail: "图片已下载", life: 2000 });
+    toast.add({
+      severity: "success",
+      summary: "下载成功",
+      detail: "图片已下载",
+      life: APP_CONFIG.TOAST_DURATION_SUCCESS,
+    });
   } catch {
-    toast.add({ severity: "error", summary: "下载失败", detail: "无法下载图片", life: 3000 });
+    toast.add({
+      severity: "error",
+      summary: "下载失败",
+      detail: "无法下载图片",
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
+    });
   }
 };
 
@@ -116,10 +147,20 @@ const deleteImage = async (name: string) => {
   if (confirm(`确定要删除图片 ${name} 吗？此操作不可恢复。`)) {
     try {
       await imagesStore.removeImage(name);
-      toast.add({ severity: "success", summary: "删除成功", detail: "图片已删除", life: 2000 });
+      toast.add({
+        severity: "success",
+        summary: "删除成功",
+        detail: "图片已删除",
+        life: APP_CONFIG.TOAST_DURATION_SUCCESS,
+      });
       selectedImages.value = selectedImages.value.filter((sel) => sel !== name);
     } catch (e: any) {
-      toast.add({ severity: "error", summary: "删除失败", detail: e.message, life: 3000 });
+      toast.add({
+        severity: "error",
+        summary: "删除失败",
+        detail: e.message,
+        life: APP_CONFIG.TOAST_DURATION_ERROR,
+      });
     }
   }
 };
@@ -148,11 +189,16 @@ const batchDelete = async () => {
         severity: "success",
         summary: "删除成功",
         detail: `已删除 ${selectedImages.value.length} 张图片`,
-        life: 2000,
+        life: APP_CONFIG.TOAST_DURATION_SUCCESS,
       });
       selectedImages.value = [];
     } catch (e: any) {
-      toast.add({ severity: "error", summary: "批量删除失败", detail: e.message, life: 3000 });
+      toast.add({
+        severity: "error",
+        summary: "批量删除失败",
+        detail: e.message,
+        life: APP_CONFIG.TOAST_DURATION_ERROR,
+      });
     }
   }
 };
@@ -171,7 +217,7 @@ const batchCopy = () => {
       severity: "success",
       summary: "复制成功",
       detail: `已复制 ${urls.length} 个链接`,
-      life: 2000,
+      life: APP_CONFIG.TOAST_DURATION_SUCCESS,
     });
   });
 };

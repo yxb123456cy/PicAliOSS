@@ -13,6 +13,7 @@ import { Icon } from "@iconify/vue";
 import { SDKRespTransform } from "@/utils/resp";
 import { ossChinaRegionsWithName } from "@/utils/region";
 import { LinkFormat, OssConfig } from "@/typings";
+import { APP_CONFIG } from "@/constants/config";
 
 const settingsStore = useSettingsStore();
 const toast = useToast();
@@ -61,13 +62,18 @@ const saveConfig = async () => {
     if (res.success) {
       await settingsStore.saveConfig(form.value);
       console.log("toast called");
-      toast.add({ severity: "success", summary: "成功", detail: "配置保存成功", life: 3000 });
+      toast.add({
+        severity: "success",
+        summary: "成功",
+        detail: "配置保存成功",
+        life: APP_CONFIG.TOAST_DURATION_SUCCESS,
+      });
     } else {
       toast.add({
         severity: "error",
         summary: "配置校验失败",
         detail: SDKRespTransform(res.message),
-        life: 3000,
+        life: APP_CONFIG.TOAST_DURATION_ERROR,
       });
     }
   } catch (err: any) {
@@ -75,7 +81,7 @@ const saveConfig = async () => {
       severity: "error",
       summary: "配置保存失败",
       detail: err.message || "未知错误",
-      life: 3000,
+      life: APP_CONFIG.TOAST_DURATION_ERROR,
     });
   } finally {
     isTesting.value = false;
@@ -103,8 +109,13 @@ const saveConfig = async () => {
           <Icon icon="mdi:shield-key-outline" width="14" height="14" />
           AccessKey Secret
         </label>
-        <Password id="sk" v-model="form.accessKeySecret" placeholder="输入AccessKey Secret" toggleMask
-          :feedback="false" />
+        <Password
+          id="sk"
+          v-model="form.accessKeySecret"
+          placeholder="输入AccessKey Secret"
+          toggleMask
+          :feedback="false"
+        />
       </div>
       <div class="field">
         <label for="bucket">
@@ -118,18 +129,35 @@ const saveConfig = async () => {
           <Icon icon="mdi:earth" width="14" height="14" />
           Bucket 所在区域 (Region)
         </label>
-        <Select id="region" v-model="form.region" :options="regionOptions" optionLabel="label" optionValue="value"
-          placeholder="请选择 Bucket 所在区域" filter class="w-full" />
+        <Select
+          id="region"
+          v-model="form.region"
+          :options="regionOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="请选择 Bucket 所在区域"
+          filter
+          class="w-full"
+        />
       </div>
       <div class="field">
         <label for="domain">
           <Icon icon="mdi:link-variant" width="14" height="14" />
           自定义域名 (可选)
         </label>
-        <InputText id="domain" v-model="form.customDomain" placeholder="例如：https://img.example.com" />
+        <InputText
+          id="domain"
+          v-model="form.customDomain"
+          placeholder="例如：https://img.example.com"
+        />
       </div>
 
-      <Button label="保存配置并测试连接" @click="saveConfig" :loading="isTesting" class="w-full mt-2" />
+      <Button
+        label="保存配置并测试连接"
+        @click="saveConfig"
+        :loading="isTesting"
+        class="w-full mt-2"
+      />
     </div>
 
     <Divider />
@@ -144,8 +172,13 @@ const saveConfig = async () => {
           <Icon icon="mdi:format-link" width="14" height="14" />
           默认链接格式
         </label>
-        <Select v-model="selectedFormat" :options="linkFormats" optionLabel="label" placeholder="选择链接格式"
-          class="w-full" />
+        <Select
+          v-model="selectedFormat"
+          :options="linkFormats"
+          optionLabel="label"
+          placeholder="选择链接格式"
+          class="w-full"
+        />
       </div>
       <div class="field">
         <label>
